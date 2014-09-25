@@ -1,0 +1,20 @@
+---
+ - name: Create WordPress configuration for Nginx
+   template: src="wordpress-site.conf.j2" dest="/etc/nginx/sites-available/{{ wp_project_name }}.conf"
+   ignore_errors: true
+
+ - name: Add sendfile off param if DEV ENV ( http://wiki.nginx.org/Pitfalls )
+   lineinfile: dest="/etc/nginx/sites-available/{{ wp_project_name }}.conf" insertafter="^listen" line="sendfile off;"
+   when: DEV
+
+ - name: Enable WordPress site
+   file: src="/etc/nginx/sites-available/{{ wp_project_name }}.conf"
+        dest="/etc/nginx/sites-enabled/{{ wp_project_name }}.conf"
+        owner=root
+        group=root
+        state=link
+
+ - name: Copy php-fpm configuration
+   template: src="php-fpm.conf.j2"
+            dest="/etc/php5/fpm/pool.d/{{ wp_project_name }}.conf"
+   notify: restart php-fpm

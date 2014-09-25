@@ -1,0 +1,14 @@
+---
+### Install required applications
+- include: init.yml
+- include: marinadb.yml
+- include: nginx.yml
+- include: php55.yml
+### TODO: use nvm to install/manage nodejs
+# - include: nvm.yml
+###
+- include: nodejs.yml
+- include: composer.yml
+- include: wp-cli.yml
+- include: bundler.yml
+- include: memcached.yml

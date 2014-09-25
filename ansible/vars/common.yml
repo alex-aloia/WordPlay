@@ -1,0 +1,7 @@
+---
+    php_ppa: php5-5.6
+    doc_root: /srv
+    sys_packages: ["vim","git","fail2ban","tmux"]
+    timezone: UTC
+    dist: trusty
+    php_packages: ["php5-mysql","php5-xdebug"]

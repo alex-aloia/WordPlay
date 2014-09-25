@@ -1,0 +1,9 @@
+---
+- name: "Setup Environment"
+  hosts: all
+  remote_user: "{{ deploy_user }}"
+# sudo_user: "{{ deploy_user }}"
+  sudo: true
+
+  roles:
+  - apps

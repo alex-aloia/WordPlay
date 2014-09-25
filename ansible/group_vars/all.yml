@@ -1,0 +1,33 @@
+---
+# ENVIRONMENT -- dev, staging, production
+DEV: true
+
+# deploy user credentials
+sudoers_email: true
+deploy_user: tripl3inf
+deploy_group: t3i
+deploy_key: "~/.ssh/t3i_deploy.pub"
+deploy_passwd: "$6$1baYpoEoIHN0$uxzGipd9Tghmw2caXXbjwxWqXY9/iXtIRk/FylrN0XRYRun9GOmw6H0MGOWNFma1NNuBdXaxCIqtqVFBPg/l2."
+
+# GitHub SSH Private Key
+github_key: "~/.ssh/t3i_deploy"
+github_key_name: t3i_deploy
+
+### MySQL/MarinaDB Database
+# override default root passwd (apps/defaults/)
+sql_root_pass: "sql_pass"
+
+
+# memcched session?
+memcached_sessions: false
+
+# wordpress
+wp_project_name: wp_test
+wp_home_url: wp_test.com
+wp_db_name: db_test
+wp_db_passwd: test_passwd
+wp_admin_pass: test_passwd
+wp_admin_email: test@test.com
+
+# Disable All Updates
+auto_up_disable: true

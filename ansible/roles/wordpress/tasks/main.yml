@@ -1,0 +1,19 @@
+---
+#create directory structure
+- include: structure.yml
+
+#create database
+- include: db.yml
+
+#add Nginx conf
+- include: nginx.yml
+
+#add PHP-FPM conf
+- include: php-fpm.yml
+
+#configure wordpress
+- include: wp.yml
+
+# configure theme building environment
+- include: theme.yml
+

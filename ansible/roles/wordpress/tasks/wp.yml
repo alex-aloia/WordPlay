@@ -1,0 +1,44 @@
+---
+- name: Fetch random salts for Wordpress config
+  local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
+  register: "wp_salt"
+  sudo: false
+
+- name: Create wp-config file
+  template: src="wp-config.php" dest="/srv/{{ wp_project_name }}/www/"
+  sudo: true
+
+- name: Download WP core files
+  command: wp core download --path="/srv/{{ wp_project_name }}/www/wordpress/"
+  sudo: true
+  #ignore_errors: true
+
+#- name: Link wp-config to current directory
+#  file: src="/srv/{{ wp_project_name }}/shared/wp-config.php" dest="../current" state="link"
+#  sudo: false
+
+#- name: Link core files to current
+#  command: "ln -sf /srv/{{ wp_project_name }}/shared/wordress /srv/{{ wp_project_name }}/current/wordpress"
+#  tags:
+#    - dbg
+
+- name: WP installed?
+  command: wp core is-installed --allow-root
+  args:
+    chdir: "/srv/{{ wp_project_name }}/www/wordpress"
+  register: site_statuses
+  ignore_errors: true
+
+- name: Install WP
+  command: wp core install
+           --allow-root
+           --url="{{ wp_home_url }}"
+           --title="{{ wp_project_name }}"
+           --admin_user="{{ deploy_user }}"
+           --admin_password="{{ wp_admin_pass }}"
+           --admin_email="{{ wp_admin_email }}"
+           --path="wordpress"
+  args:
+    chdir: "/srv/{{ wp_project_name }}/www"
+  with_items: site_statuses.results
+  notify: reload nginx

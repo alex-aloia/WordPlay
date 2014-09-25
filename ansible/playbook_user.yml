@@ -1,0 +1,12 @@
+---
+- name: "Setup Environment"
+  hosts: all
+  user: root
+  sudo: yes
+
+  ### Override the defaults included in user role
+  vars:
+    #deploy_user: user_override
+
+  roles:
+  - user
