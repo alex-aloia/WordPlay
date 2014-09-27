@@ -3,14 +3,18 @@
   hosts: all
   remote_user: "{{ deploy_user }}"
 #  sudo_user: tripl3inf
-  #sudo: true
+<<<<<<< HEAD
+#  sudo: true
+=======
+  sudo: true
+>>>>>>> origin/master
   # speed up dev -- turn off fact gather
   #gather_facts: no
 
   ### Override the defaults included in user role
   vars:
-    #theme_repo_url: git@github.com:tripl3inf/ten10_app.git
-    #deploy_user: tripl3inf
+    theme_repo_url: git@github.com:tripl3inf/ten10_app.git
+#    deploy_user: tripl3inf
 
   roles:
-  - debug
+  - wordpress

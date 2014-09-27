@@ -1,0 +1,5 @@
+---
+#:playbook: test-playbook.yml             
+:playbook: defaultplaybook.yml      
+:inventory: vagrant-flow_ansible_inventory
+

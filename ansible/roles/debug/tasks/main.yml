@@ -1,0 +1,38 @@
+---
+- name: Create direc to hold assets
+  file: path='~/debug_env/'
+        state=directory
+
+- name: Copy Gemfile to HOME direc
+  copy: src='../files/Gemfile' dest='~/debug_env/Gemfile'
+
+- name: Install bundle
+  shell: cd ~/debug_env && bundle install --binstubs
+
+- name: Set/Confirm default editor (vim)
+  lineinfile: dest='~/.bashrc' regexp='^export EDITOR' line="export EDITOR='vim'"
+
+- name: Transfer custom tmux config
+  copy: src='.tmux.conf' dest='~/'
+
+- name: Create tmuxinator custom config direc
+  file: path='~/.tmuxinator/'
+        state=directory
+
+- name: Copy Tmuxinator debug config template
+  template: src="tmuxinator-debug-template.yml"
+            dest='~/.tmuxinator/debug.yml'
+
+- name: Copy Tmux auto-start script
+  template: src='tmux-auto.sh'
+            dest='~/'
+            mode=770
+
+- name: Source Tmux auto script in bashrc
+  lineinfile: dest='~/.bashrc'
+              line='source ~/tmux-auto.sh'
+              state=present
+
+
+
+

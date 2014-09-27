@@ -1,0 +1,9 @@
+name: debug {{ wp_project_name }}
+root: ~/srv/{{ wp_project_name }}
+
+windows:
+  - logs-nginx:
+      layout: main-horizontal
+      panes:
+        - tail -F /srv/{{ wp_project_name }}/logs/wp_test.error.log
+        - tail -F /srv/{{ wp_project_name }}/logs/wp_test.access.log

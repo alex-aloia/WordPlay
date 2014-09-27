@@ -1,5 +1,14 @@
-.vagrant**
-.idea**
+.idea/**
+.vagrant/**
+*.log
+
 Vagrantfile
 vagrant-flow_ansible_inventory
+
+# DEV files
+DeveloperPlayBooks
+ansible-examples
+bedrock-ansible
+
+
 

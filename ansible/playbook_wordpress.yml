@@ -1,9 +1,9 @@
 ---
 - name: "Setup WP Theme"
   hosts: all
-  user: {{ deploy_user }}
+  user: "{{ deploy_user }}"
   remote_user: "{{ deploy_user }}"
-  sudo: true
+  #sudo: true
   sudo_user: root
   # speed up dev -- turn off fact gather
   #gather_facts: no

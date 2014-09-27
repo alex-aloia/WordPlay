@@ -1,0 +1,47 @@
+---
+- name: Setup deploy group
+  group: name={{ deploy_group }} state=present
+  sudo: true
+
+- name: Setup deploy user
+  user: name={{ deploy_user }}
+        group={{ deploy_group }}
+        groups={{ deploy_groups }}
+        shell=/bin/bash
+        password={{ deploy_passwd }}
+        state=present
+
+- name: Add public key to server
+  authorized_key: user={{ deploy_user }} key="{{ item }}"
+  with_file: deploy_key
+
+- name: Create tmp file for sudoers additions
+  command: cp -f /etc/sudoers /etc/sudoers.tmp
+  tags:
+    - dbg
+
+- name: Create sudoers file backup
+  command: cp -f /etc/sudoers /etc/sudoers.{{ ansible_date_time.date }}_{{ ansible_date_time.time }}.bak
+  sudo: true
+
+- name: Sudoers | update sudoers file and validate
+  lineinfile: "dest=/etc/sudoers.tmp line='{{ deploy_user }} ALL=(ALL) NOPASSWD: ALL' regexp='^{{deploy_user }}' state=present"
+  sudo: true
+
+- name: Set SSH-Agent environment var in sudoers
+  lineinfile: >
+    dest=/etc/sudoers.tmp
+    state=present
+    regexp='^Defaults env_keep\+\=SSH_AUTH_SOCK'
+    line='Defaults env_keep+=SSH_AUTH_SOCK'
+    insertafter='^Defaults'
+
+- name: Check sudoers file and make current
+  shell: visudo -q -c -f /etc/sudoers.tmp && cp -f /etc/sudoers.tmp /etc/sudoers
+  sudo: true
+<<<<<<< HEAD
+
+- include: github_key.yml
+
+=======
+>>>>>>> origin/master

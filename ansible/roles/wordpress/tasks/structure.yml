@@ -1,22 +1,42 @@
 ---
 - name: Create web root of sites
   file: path="/srv/{{ wp_project_name }}/www"
-        owner="{{ deploy_user }}"
-        group=www-data
-        mode=0755
         state=directory
   tags: dbg
 
 - name: Create logs folder of sites
   file: path="/srv/{{ wp_project_name }}/logs"
-        owner="{{ deploy_user }}"
-        group=www-data
-        mode=0755
         state=directory
 
 - name: Change site owner to user
   file: path="/srv/{{ wp_project_name }}"
-        owner="{{ deploy_user }}"
-        group=www-data
         state=directory
         recurse=yes
+
+
+
+
+
+
+### BEFORE NFS -- Cant change owership locally with NFS
+#- name: Create web root of sites
+#  file: path="/srv/{{ wp_project_name }}/www"
+#        owner="{{ deploy_user }}"
+#        group=www-data
+#        mode=0755
+#        state=directory
+#  tags: dbg
+#
+#- name: Create logs folder of sites
+#  file: path="/srv/{{ wp_project_name }}/logs"
+#        owner="{{ deploy_user }}"
+#        group=www-data
+#        mode=0755
+#        state=directory
+#
+#- name: Change site owner to user
+#  file: path="/srv/{{ wp_project_name }}"
+#        owner="{{ deploy_user }}"
+#        group=www-data
+#        state=directory
+#        recurse=yes

@@ -2,7 +2,10 @@
 - name: Checkout theme base from REPO
   git: repo={{ theme_repo_url }}
        dest=/srv/{{ wp_project_name }}/repo/
-       version=HEAD
-       key_file={{ github_key }}
-       ssh_opts="-o StrictHostKeyChecking=no"
+       version=HEAD accept_hostkey=yes
   sudo: false
+  tags:
+    - dbg
+
+       #ssh_opts="-o StrictHostKeyChecking=no"
+       #key_file={{ github_key }}

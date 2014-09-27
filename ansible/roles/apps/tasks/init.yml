@@ -17,6 +17,7 @@
     - libssl-dev
     - vim
     - tmux
+    - tree
     #- fail2ban
 
   - name: Update apt
