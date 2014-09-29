@@ -23,11 +23,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vmware.vm.network "public_network", bridge: 'en1: Wi-Fi (AirPort)'
 #   vmware.ssh.forward_agent = true
     config.ssh.username = "tripl3inf"
+	config.ssh.private_key_path = "~/.ssh/t3i_deploy"
 
 	config.vm.provider "vmware_fusion" do |vmware|
 #   vmware.gui = true
     vmware.vmx["memsize"] = "1024"
 	vmware.vmx["numvcpus"] = "1"
+	vmware.vmx["sharedFolder0.followSymlinks"] = "TRUE"
 
 #    vmware.vmx["ethernet0.generatedAddress"] = nil
 #    vmware.vmx["ethernet0.addressType"] = "static"
