@@ -11,6 +11,7 @@
   ### Override the defaults included in user role
   vars:
     theme_repo_url: git@github.com:tripl3inf/ten10_app.git
+    theme_repo_branch: stripped
 #    deploy_user: tripl3inf
 
   roles:

@@ -1,13 +1,14 @@
 ---
-#- name: restart nginx
-#  service: name=nginx state=reloaded
+- name: restart nginx
+  service: name=nginx state=reloaded
 
 - name: reload nginx
   service: name=nginx state=reloaded
 
-# restart php-fpm
 - name: restart php-fpm
-  service: name=php5-fpm state=restarted
+  shell: service php5-fpm restart
+  #service: name=php5-fpm state=restarted
+  sudo: true
 
 - name: reload php-fpm
   service: name=php5-fpm state=reloded

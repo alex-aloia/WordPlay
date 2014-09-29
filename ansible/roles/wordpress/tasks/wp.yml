@@ -13,36 +13,12 @@
   sudo: false
   ignore_errors: true
 
-#- name: Link wp-config to current directory
-#  file: src="/srv/{{ wp_project_name }}/shared/wp-config.php" dest="../current" state="link"
-#  sudo: false
-
-#- name: Link core files to current
-#  command: "ln -sf /srv/{{ wp_project_name }}/shared/wordress /srv/{{ wp_project_name }}/current/wordpress"
-#  tags:
-#    - dbg
-
 - name: WP installed?
   command: wp core is-installed --allow-root
   args:
     chdir: "/srv/{{ wp_project_name }}/wordpress"
   register: site_statuses
   ignore_errors: true
-
-
-
-
-#- name: SSH | Find Git repo SSH host key
-#  shell: ssh-keyscan {{ git_repo }}
-#  register: git_repo_host_key
-#  sudo_user: {{ deploy_user }}
-#
-#- name: SSH | Add Git repo host key to known_hosts file
-#  lineinfile: create=yes dest=/home/prov/.ssh/known_hosts line='{{ git_repo_host_key.stdout }}' state=present
-#  sudo_user: {{ deploy_user }}
-
-
-
 
 - name: Install WP
   command: wp core install
@@ -56,4 +32,4 @@
   args:
     chdir: "/srv/{{ wp_project_name }}"
   with_items: site_statuses.results
-  notify: reload nginx
+  notify: restart nginx
