@@ -5,11 +5,11 @@
   sudo: false
 
 - name: Create wp-config file
-  template: src="wp-config.php" dest="/srv/{{ wp_project_name }}/www/"
-  sudo: true
+  template: src="template_wp-config" dest="/srv/{{ wp_project_name }}/wp-config.php"
+  sudo: false
 
 - name: Download WP core files
-  command: wp core download --path="/srv/{{ wp_project_name }}/www/wordpress/"
+  command: wp core download --path="/srv/{{ wp_project_name }}/wordpress/"
   sudo: false
   ignore_errors: true
 
@@ -25,7 +25,7 @@
 - name: WP installed?
   command: wp core is-installed --allow-root
   args:
-    chdir: "/srv/{{ wp_project_name }}/www/wordpress"
+    chdir: "/srv/{{ wp_project_name }}/wordpress"
   register: site_statuses
   ignore_errors: true
 
@@ -54,6 +54,6 @@
            --admin_email="{{ wp_admin_email }}"
            --path="wordpress"
   args:
-    chdir: "/srv/{{ wp_project_name }}/www"
+    chdir: "/srv/{{ wp_project_name }}"
   with_items: site_statuses.results
   notify: reload nginx

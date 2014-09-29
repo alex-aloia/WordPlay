@@ -1,6 +1,6 @@
 ---
  - name: Create WordPress configuration for Nginx
-   template: src="wordpress-site.conf.j2" dest="/etc/nginx/sites-available/{{ wp_project_name }}.conf"
+   template: src="template_nginx_wp.conf" dest="/etc/nginx/sites-available/{{ wp_project_name }}.conf"
    #ignore_errors: true
    sudo: true
 
@@ -9,12 +9,15 @@
    when: DEV
 
  - name: Enable WordPress site
-   file: src="/etc/nginx/sites-available/{{ wp_project_name }}.conf"
-        dest="/etc/nginx/sites-enabled/{{ wp_project_name }}.conf"
-        owner=root
-        group=root
-        state=link
+   file: src=/etc/nginx/sites-available/{{ wp_project_name }}.conf
+         dest=/etc/nginx/sites-enabled/{{ wp_project_name }}.conf
+         owner=root
+         group=root
+         state=link
    sudo: true
-   notify: nginx
+
+
+
+#   notify: restart nginx
 
 

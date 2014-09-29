@@ -1,17 +1,29 @@
 ---
-- name: Create web root of sites
-  file: path="/srv/{{ wp_project_name }}/www"
+- name: Create projects site root
+  file: path=/srv/{{ wp_project_name }}/
         state=directory
-  tags: dbg
+        mode=0755
+  sudo: true
 
-- name: Create logs folder of sites
-  file: path="/srv/{{ wp_project_name }}/logs"
+- name: Create WP content directory
+  file: path=/srv/{{ wp_project_name }}/content
         state=directory
+        mode=0755
+
+- name: Create project logs folder
+  file: path=/srv/{{ wp_project_name }}/logs
+        state=directory
+        mode=0755
 
 - name: Change site owner to user
-  file: path="/srv/{{ wp_project_name }}"
-        state=directory
-        recurse=yes
+  file: path=/srv/{{ wp_project_name }}
+        owner={{ deploy_user }}
+        group=www-data
+
+#  shell: chown -R {{ deploy_user }}:www-data /srv/{{ wp_project_name }}
+#- name: Verify permissons (0755)
+#  file: path=/srv/{{ wp_project_name }}
+#        recurse=yes
 
 
 

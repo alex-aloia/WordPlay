@@ -1,7 +1,7 @@
 ---
 # restart php-fpm
-- name: restart php-fpm
-  service: name=php5-fpm state=restarted
+- name: reload php-fpm
+  service: name=php5-fpm state=restarted enabled=yes sleep=5
 
 - name: restart memcached
   service: name=memcached state=restarted

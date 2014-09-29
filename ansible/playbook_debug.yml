@@ -1,7 +1,8 @@
 ---
 - name: "Setup Environment"
   hosts: all
-  remote_user: "{{ deploy_user }}"
+  user: "{{ deploy_user }}"
+#  remote_user: "{{ deploy_user }}"
 #  sudo_user: tripl3inf
   #sudo: true
   # speed up dev -- turn off fact gather
@@ -13,4 +14,4 @@
     #deploy_user: tripl3inf
 
   roles:
-  - theme
+  - debug

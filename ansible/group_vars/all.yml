@@ -1,4 +1,8 @@
 ---
+ansible_ssh_user: tripl3inf
+#ansible_ssh_pass: vagrant
+
+
 # ENVIRONMENT -- dev, staging, production
 DEV: true
 
@@ -22,10 +26,10 @@ sql_root_pass: "sql_pass"
 memcached_sessions: false
 
 # wordpress
-wp_project_name: wp_test
-wp_home_url: wp_test.com
+wp_project_name: vmware
+wp_home_url: vmware.com
 wp_db_name: db_test
-wp_db_passwd: test_passwd
+wp_db_pass: test_passwd
 wp_admin_pass: test_passwd
 wp_admin_email: test@test.com
 

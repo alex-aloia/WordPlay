@@ -38,7 +38,7 @@ memcached_sessions: false
 wp_project_name: wp_test
 wp_home_url: wp_test.com
 wp_db_name: db_test
-wp_db_passwd: test_passwd
+wp_db_pass: test_passwd
 wp_admin_pass: test_passwd
 wp_admin_email: test@test.com
 

@@ -1,4 +1,3 @@
----
 # create directory structure
 - include: structure.yml
 
@@ -16,4 +15,5 @@
 
 # configure theme building environment
 - include: theme.yml
+  tags: theme
 
