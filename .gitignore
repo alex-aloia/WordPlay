@@ -3,6 +3,7 @@ srv/*
 .vagrant/**
 *.log
 
+ansible/hosts/hosts.yml
 Vagrantfile
 vagrant-flow_ansible_inventory
 
