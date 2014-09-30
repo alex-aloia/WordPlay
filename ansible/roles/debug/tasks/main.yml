@@ -33,6 +33,11 @@
               line='source ~/tmux-auto.sh'
               state=present
 
+- include: xdebug.yml
+  tags:
+    - xdebug
 
 
-
+- include: webgrind.yml
+  tags:
+    - webgrind

@@ -1,0 +1,25 @@
+---
+
+- name: Create WebGrind location
+  file: state=directory
+        dest=/srv/{{wp_project_name}}/webgrind
+  register: webgrind_location
+
+
+- name: Get WebGrind
+  git: repo=git@github.com:jokkedk/webgrind.git
+       dest=/srv/{{wp_project_name}}/webgrind/
+       accept_hostkey=yes
+  when: webgrind_location | changed
+
+- name: Add WebGrind to php.ini
+  sudo: true
+  sudo_user: root
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              line='xdebug.profiler_enable = 1'
+              regexp='^xdebug.profiler'
+  notify:
+    - restart php-fpm
+    - restart nginx
+  when: webgrind_location | changed
+

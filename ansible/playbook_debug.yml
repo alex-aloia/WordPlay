@@ -3,7 +3,8 @@
   hosts: all
   user: "{{ deploy_user }}"
   remote_user: "{{ deploy_user }}"
-  sudo_user: "{{ deploy_user }}"
+  vars:
+    wp_project_name: wptest
 
   roles:
   - debug
