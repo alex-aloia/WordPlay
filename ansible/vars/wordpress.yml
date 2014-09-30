@@ -1,5 +1,5 @@
 wordpress:
   -
-    site-name: test.com
-    user: user-name
-    pass: password-test
+    site-name:
+    user:
+    pass:

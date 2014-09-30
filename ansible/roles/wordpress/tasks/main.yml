@@ -1,5 +1,6 @@
 # create directory structure
 - include: structure.yml
+  sudo: true
 
 # create database
 - include: db.yml
@@ -14,6 +15,6 @@
 - include: wp.yml
 
 # configure theme building environment
-#- include: theme.yml
-#  tags: theme
+- include: theme.yml
+  tags: theme
 

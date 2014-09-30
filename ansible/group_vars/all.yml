@@ -28,8 +28,8 @@ memcached_sessions: false
 
 # wordpress
 wp_project_name: wptest
-wp_home_url: wptest.com
-wp_db_name: db_test
+wp_home_url: wptest.dev
+wp_db_name: DB_wptest
 wp_db_pass: test_passwd
 wp_admin_pass: test_passwd
 wp_admin_email: test@test.com

@@ -4,23 +4,26 @@
   register: content_path
 
 - name: Checkout theme base from REPO
-  git: repo={{ theme_repo_url }} dest=/srv/{{ wp_project_name }}/content
+  git: repo=git@github.com:tripl3inf/ten10_app.git dest="{{ content_path.stdout }}"
        version={{ theme_repo_branch | default (default_theme_branch) }}
        accept_hostkey=yes
-  sudo: false
+       force=yes
+#  sudo: true
+#  sudo_user: "{{ deploy_user }}"
+
+- name: Composer install
+  shell: cd {{ content_path.stdout }}; composer install
+
+- name: NPM install
+  npm: path={{ content_path.stdout }}/themes/ten10_roots
+       state=present
+
+- name: Bower install
+  shell: cd {{ content_path.stdout }}/themes/ten10_roots; bower install --silent
+
+- name: Grunt build
+  shell: cd {{ content_path.stdout }}/themes/ten10_roots; grunt build
   notify:
   - restart nginx
   - restart php-fpm
 
-#- name: Composer install
-#  shell: cd {{ release_path.stdout }}; composer install
-#
-#- name: NPM install
-#  npm: path=/{{ release_path.stdout }}/themes/ten10_roots
-#       state=present
-#       global=yes
-#       production=yes
-
-#- name: php-fpm restart
-#  shell: service php5-fpm restart
-#  sudo: true

@@ -13,6 +13,7 @@
     - ruby
     - python-software-properties
     - python-selinux
+    - python-pip
     - build-essential
     - libssl-dev
     - vim
