@@ -9,9 +9,10 @@ define('SAVEQUERIES', true);
 < -------------------------- */
 
 //define('WP_ENV', 'development');
-define('WP_HOME','http://{{ wp_project_name }}');
-define('WP_SITEURL','http://{{ wp_project_name }}/wordpress');
-define('WP_CONTENT_URL', 'http://{{ wp_project_name }}/content');
+define('WP_HOME','http://{{ wp_project_name }}/wordpress');
+define('WP_SITEURL','http://{{ wp_project_name }}');
+define('WP_CONTENT_URL', 'http://{{ wp_project_name }}/wordpress/wp-content');
+//define('WP_CONTENT_URL', 'http://{{ wp_project_name }}/content');
 define('DB_NAME', '{{ wp_project_name }}');
 define('DB_USER', '{{ deploy_user }}');
 define('DB_PASSWORD', '{{ wp_db_pass }}');
@@ -31,7 +32,7 @@ $table_prefix  = 'wp_';
   for the `dirname(__FILE__)` method below.
  <---------------------------------------------------------------------------------------------------------------- */
 
-define('WP_CONTENT_DIR', realpath(dirname(__FILE__) . '/content'));
+//define('WP_CONTENT_DIR', realpath(dirname(__FILE__) . '/content'));
 //define('WP_CONTENT_DIR', realpath($_SERVER['DOCUMENT_ROOT'] . '/content'));
 
 if ( !defined('ABSPATH') )
@@ -41,7 +42,6 @@ require_once(ABSPATH . 'wp-settings.php');
 
 /** Disable Automatic Updates Completely */
 define( 'AUTOMATIC_UPDATER_DISABLED', {{auto_up_disable}} );
-
 
 
 

@@ -5,6 +5,7 @@ ansible_ssh_user: tripl3inf
 
 # ENVIRONMENT -- dev, staging, production
 DEV: true
+VBox: false
 
 # deploy user credentials
 sudoers_email: true
@@ -26,8 +27,8 @@ sql_root_pass: "sql_pass"
 memcached_sessions: false
 
 # wordpress
-wp_project_name: vmware
-wp_home_url: vmware.com
+wp_project_name: wptest
+wp_home_url: wptest.com
 wp_db_name: db_test
 wp_db_pass: test_passwd
 wp_admin_pass: test_passwd

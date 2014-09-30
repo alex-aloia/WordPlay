@@ -5,7 +5,11 @@
   sudo: false
 
 - name: Create wp-config file
-  template: src="template_wp-config" dest="/srv/{{ wp_project_name }}/wp-config.php"
+  template: src="template_wp-config.php" dest="/srv/{{ wp_project_name }}/wp-config.php"
+  sudo: false
+
+- name: Copy index.php file
+  template: src="template_wp_index.php" dest="/srv/{{ wp_project_name }}/index.php"
   sudo: false
 
 - name: Download WP core files
@@ -32,4 +36,12 @@
   args:
     chdir: "/srv/{{ wp_project_name }}"
   with_items: site_statuses.results
-  notify: restart nginx
+  notify:
+    - restart nginx
+    - restart php-fpm
+
+#- name: Symlink default theme
+#  file: path=/srv/{{ wp_project_name }}/content/themes
+#        src=/srv/{{ wp_project_name }}/wordpress/wp-content/themes/twentyfourteen
+#        state=link
+#        force=true

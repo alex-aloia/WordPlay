@@ -10,7 +10,7 @@
   shell: cd ~/debug_env && bundle install --binstubs
 
 - name: Set/Confirm default editor (vim)
-  lineinfile: dest='~/.bashrc' regexp='^export EDITOR' line="export EDITOR='vim'"
+  lineinfile: dest='/home/{{ deploy_user }}/.bashrc' regexp='^export EDITOR' line="export EDITOR='vim'"
 
 - name: Transfer custom tmux config
   copy: src='.tmux.conf' dest='~/'

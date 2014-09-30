@@ -18,6 +18,7 @@
     - vim
     - tmux
     - tree
+    - mc
     #- fail2ban
 
   - name: Update apt

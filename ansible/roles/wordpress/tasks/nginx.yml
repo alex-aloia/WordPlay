@@ -4,9 +4,9 @@
    #ignore_errors: true
    sudo: true
 
- - name: Add sendfile off param if DEV ENV ( http://wiki.nginx.org/Pitfalls )
+ - name: Add sendfile off param if VBox ( http://wiki.nginx.org/Pitfalls )
    lineinfile: dest="/etc/nginx/sites-available/{{ wp_project_name }}.conf" insertafter="^listen" line="sendfile off;"
-   when: DEV
+   when: VBox
 
  - name: Enable WordPress site
    file: src=/etc/nginx/sites-available/{{ wp_project_name }}.conf
