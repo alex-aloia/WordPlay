@@ -1,29 +1,50 @@
 ---
-- name: Register content/theme directory
-  command: echo "/srv/{{ wp_project_name }}/content"
+#- name: Register content/theme directory
+#  command: echo "/srv/{{ wp_project_name }}/content"
+#  register: content_path
+
+
+- name: Create WP content directory
+  file: path=/srv/{{ wp_project_name }}/content
+        state=directory
+        mode=0755
   register: content_path
 
+- debug: var=content_path.path
+
 - name: Checkout theme base from REPO
-  git: repo=git@github.com:tripl3inf/ten10_app.git dest="{{ content_path.stdout }}"
+  git: repo=git@github.com:tripl3inf/ten10_app.git dest={{content_path.path}}
        version={{ theme_repo_branch | default (default_theme_branch) }}
        accept_hostkey=yes
        force=yes
-#  sudo: true
+  sudo: false
 #  sudo_user: "{{ deploy_user }}"
 
+
 - name: Composer install
-  shell: cd {{ content_path.stdout }}; composer install
+  shell: cd {{content_path.path}}; composer install
 
-- name: NPM install
-  npm: path={{ content_path.stdout }}/themes/ten10_roots
-       state=present
-
-- name: Bower install
-  shell: cd {{ content_path.stdout }}/themes/ten10_roots; bower install --silent
-
-- name: Grunt build
-  shell: cd {{ content_path.stdout }}/themes/ten10_roots; grunt build
+- name: Build theme
+  shell: cd {{content_path.path}}/themes/ten10_roots; {{ item }}
+  ignore_errors: true
+  with_items:
+    - npm install
+    - bower install
+    - grunt build
   notify:
   - restart nginx
   - restart php-fpm
+
+
+
+
+#- name: NPM install
+#  npm: path=content_path.stdout/themes/ten10_roots
+#       state=present
+#
+#- name: Bower install
+#  shell: cd content_path.stdout/themes/ten10_roots; bower install --silent
+#
+#- name: Grunt build
+#  shell: cd content_path.stdout/themes/ten10_roots; grunt build
 

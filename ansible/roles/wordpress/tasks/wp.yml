@@ -16,12 +16,14 @@
   command: wp core download --path="/srv/{{ wp_project_name }}/wordpress/"
   sudo: false
   ignore_errors: true
+  register: wp_core_files
 
 - name: WP installed?
   command: wp core is-installed --allow-root
   args:
     chdir: "/srv/{{ wp_project_name }}/wordpress"
-  register: site_statuses
+  when: wp_core_files | changed
+  register: site_status
   ignore_errors: true
 
 - name: Install WP
@@ -35,13 +37,8 @@
            --path="wordpress"
   args:
     chdir: "/srv/{{ wp_project_name }}"
-  with_items: site_statuses.results
+  when: wp_core_files | changed
   notify:
     - restart nginx
     - restart php-fpm
 
-#- name: Symlink default theme
-#  file: path=/srv/{{ wp_project_name }}/content/themes
-#        src=/srv/{{ wp_project_name }}/wordpress/wp-content/themes/twentyfourteen
-#        state=link
-#        force=true

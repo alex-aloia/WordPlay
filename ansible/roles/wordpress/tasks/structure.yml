@@ -5,10 +5,10 @@
         mode=0755
   sudo: true
 
-- name: Create WP content directory
-  file: path=/srv/{{ wp_project_name }}/content
-        state=directory
-        mode=0755
+#- name: Create WP content directory
+#  file: path=/srv/{{ wp_project_name }}/content
+#        state=directory
+#        mode=0755
 
 - name: Create project logs folder
   file: path=/srv/{{ wp_project_name }}/logs

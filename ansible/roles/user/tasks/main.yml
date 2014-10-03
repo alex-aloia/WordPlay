@@ -18,7 +18,6 @@
 - name: Create tmp file for sudoers additions
   command: cp -f /etc/sudoers /etc/sudoers.tmp
   tags:
-    - dbg
 
 - name: Create sudoers file backup
   command: cp -f /etc/sudoers /etc/sudoers.{{ ansible_date_time.date }}_{{ ansible_date_time.time }}.bak
@@ -40,5 +39,5 @@
   shell: visudo -q -c -f /etc/sudoers.tmp && cp -f /etc/sudoers.tmp /etc/sudoers
   sudo: true
 
-- include: github_key.yml
+#- include: github_key.yml
 

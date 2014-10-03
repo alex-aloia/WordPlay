@@ -2,7 +2,20 @@
 - name: "Setup Environment"
   hosts: all
   user: root
+  #remote_user: root
   sudo: yes
+
+  vars_prompt:
+  - name: "deploy_user"
+    prompt: "Enter a user name"
+    private: no
+
+  - name: "deploy_passwd"
+    prompt: "Enter a new password for the user"
+    private: yes
+    encrypt: "md5_crypt" #need to have python-passlib installed in local machine before we can use it
+    confirm: yes
+    salt_size: 7
 
   ### Override the defaults included in user role
   vars:
@@ -10,3 +23,5 @@
 
   roles:
   - user
+
+
