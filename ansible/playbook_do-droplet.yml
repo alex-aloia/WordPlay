@@ -1,19 +1,29 @@
 ---
-- hosts: localhost
+- hosts: 127.0.0.1
   connection: local
-  serial: 1
-  gather_facts: no
+  #serial: 1
+  gather_facts: False
   roles:
   - do-droplet
+  vars:
+    api_key: 1687f5e09e89bec0bd7edbd687857bb9
+    client_id: 716b8342df7e2e382bac54c93e529a76
+    my_pub_key: "{{ lookup('file', '~/.ssh/t3i_deploy.pub') }}"
+    do_hostname: t3inf
+    do_admin: tripl3inf
+    image_id: 6510539
+    region_id: 8
 
-- hosts: newdroplets
-  user: root
-  vars_files:
-    - roles/do-droplet/vars.yml
-  tasks:
-    - include: roles/do-droplet/tasks/users.yml
-    - include: roles/do-droplet/tasks/security.yml
+- hosts: new_drops
+  gather_facts: True
+  remote_user: root
+  #user: root
+  sudo: yes
+  roles:
+  - user
+  tags:
+  - user
 
-  handlers:
-    - include: roles/do-droplet/handlers/main.yml
+#  handlers:
+#    - include: roles/do-droplet/handlers/main.yml
 

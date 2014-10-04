@@ -1,5 +1,5 @@
 ---
-ansible_ssh_user: tripl3inf
+#ansible_ssh_user: tripl3inf
 #ansible_ssh_pass: vagrant
 
 
