@@ -1,7 +1,0 @@
----
-- name: restart nginx
-  service: name=nginx state=reloaded
-
-- name: restart php-fpm
-  shell: service php5-fpm restart
-
