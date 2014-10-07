@@ -2,7 +2,7 @@
 
 - name: Create WebGrind location
   file: state=directory
-        dest=/srv/{{wp_project_name}}/webgrind
+        dest=/srv/{{env}}/{{wp_project_name}}/webgrind
   register: webgrind_location
   sudo: true
 

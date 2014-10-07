@@ -1,41 +1,27 @@
 ---
-- name: "Setup WP - PROD"
+- name: "Setup WP - {{env}}"
   hosts: all
   remote_user: "{{ deploy_user }}"
   #sudo: true
   sudo_user: root
 
-#  roles:
-  #- debug
-#  - wordpress
-
   tasks:
-    - include: roles/wordpress/tasks/structure.yml
-    - include: roles/wordpress/tasks/db.yml
-    - include: roles/wordpress/tasks/nginx.yml
-    - include: roles/wordpress/tasks/php-fpm.yml
-    - include: roles/wordpress/tasks/wp.yml
-    - include: roles/wordpress/tasks/theme.yml
-
-  handlers:
-    - include: roles/wordpress/handlers/main.yml
+#    - include: roles/wordpress/tasks/structure.yml
+#    - include: roles/wordpress/tasks/db.yml
+#    - include: roles/wordpress/tasks/nginx.yml
+#    - include: roles/wordpress/tasks/php-fpm.yml
+#    - include: roles/wordpress/tasks/wp.yml
+#    - include: roles/wordpress/tasks/theme.yml
+    - include: roles/debug/tasks/webgrind.yml
   vars:
     env: prod
-    deploy_user: tripl3inf
-    deploy_group: t3i
-    deploy_key: "~/.ssh/t3i_deploy.pub"
-    sql_root_pass: "sql_pass"
-    # wordpress
     wp_project_name: t3inf ### TODO: change mysql db user from project name -- messes up if puctuation is used
     wp_home_url: t3inf.com
     wp_db_name: DB_t3inf_prod
     wp_db_pass: tripl3World!
     wp_admin_pass: tripl3World!
-    wp_admin_email: tripl3infinity@gmail.com
-    # Disable All Updates
-    auto_up_disable: true
-    # theme repo
     theme_name: roots
     theme_repo_url: git@github.com:roots/roots.git
-    #theme_repo_branch: stripped
 
+  handlers:
+    - include: roles/wordpress/handlers/main.yml

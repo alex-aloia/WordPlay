@@ -20,6 +20,7 @@
     - tmux
     - tree
     - mc
+    - htop
     #- fail2ban
 
   - name: Update apt
