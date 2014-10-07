@@ -4,7 +4,7 @@
 
 
 # ENVIRONMENT -- dev, staging, production
-DEV: true
+DEV: false
 VBox: false
 
 # deploy user credentials
@@ -27,12 +27,12 @@ sql_root_pass: "sql_pass"
 memcached_sessions: false
 
 # wordpress
-wp_project_name: wptest
-wp_home_url: wptest.dev
-wp_db_name: DB_wptest
-wp_db_pass: test_passwd
-wp_admin_pass: test_passwd
-wp_admin_email: test@test.com
+#wp_project_name: wptest
+#wp_home_url: wptest.dev
+#wp_db_name: DB_wptest
+#wp_db_pass: test_passwd
+#wp_admin_pass: test_passwd
+#wp_admin_email: test@test.com
 
 # Disable All Updates
-auto_up_disable: true
+# auto_up_disable: true

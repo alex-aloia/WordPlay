@@ -1,5 +1,9 @@
 <?php
 
+{% if env != 'prod' %}
+{% set domain = env + '.' %}
+{% endif %}
+
 /* -------------------------->
 // DEBUG OPTIONS
 define( 'WP_DEBUG', true );
@@ -9,10 +13,10 @@ define('SAVEQUERIES', true);
 < -------------------------- */
 
 //define('WP_ENV', 'development');
-define('WP_HOME','http://{{ wp_home_url }}');
-define('WP_SITEURL','http://{{ wp_home_url }}/wordpress');
+define('WP_HOME','http://{{ domain | default('') }}{{ wp_home_url }}');
+define('WP_SITEURL','http://{{ domain | default('') }}{{ wp_home_url }}/wordpress');
 
-define('DB_NAME', '{{ wp_project_name }}');
+define('DB_NAME', '{{env}}_{{wp_project_name}}');
 define('DB_USER', '{{ deploy_user }}');
 define('DB_PASSWORD', '{{ wp_db_pass }}');
 
@@ -31,7 +35,7 @@ $table_prefix  = 'wp_';
   for the `dirname(__FILE__)` method below.
  <---------------------------------------------------------------------------------------------------------------- */
 
-define('WP_CONTENT_URL', 'http://{{ wp_home_url }}/content');
+define('WP_CONTENT_URL', 'http://{{ domain | default('') }}{{ wp_home_url }}/content');
 define( 'WP_CONTENT_DIR', dirname(__FILE__) . '/content' );
 //define('WP_CONTENT_DIR', realpath($_SERVER['DOCUMENT_ROOT'] . '/content'));
 

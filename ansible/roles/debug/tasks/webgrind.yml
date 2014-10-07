@@ -4,13 +4,17 @@
   file: state=directory
         dest=/srv/{{wp_project_name}}/webgrind
   register: webgrind_location
+  sudo: true
 
 
 - name: Get WebGrind
-  git: repo=git@github.com:jokkedk/webgrind.git
-       dest=/srv/{{wp_project_name}}/webgrind/
-       accept_hostkey=yes
+  shell: cd {{ webgrind_location }}; curl -sS https://webgrind.googlecode.com/files/webgrind-release-1.0.zip
+#  git: repo=git@github.com:jokkedk/webgrind.git
+#       dest=/srv/{{wp_project_name}}/webgrind/
+#       accept_hostkey=yes
   when: webgrind_location | changed
+  sudo: False
+  remote_user: "{{ deploy_user }}"
 
 - name: Add WebGrind to php.ini
   sudo: true

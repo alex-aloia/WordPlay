@@ -19,7 +19,11 @@
 
   ### Override the defaults included in user role
   vars:
-    #deploy_user: user_override
+    sudoers_email: true
+    deploy_user: tripl3inf
+    deploy_group: t3i
+    deploy_passwd: "$6$1baYpoEoIHN0$uxzGipd9Tghmw2caXXbjwxWqXY9/iXtIRk/FylrN0XRYRun9GOmw6H0MGOWNFma1NNuBdXaxCIqtqVFBPg/l2."
+    deploy_key:"~/.ssh/t3i_deploy"
 
   roles:
   - user

@@ -1,8 +1,8 @@
 ---
 - name: "Setup Environment"
   hosts: all
-#  remote_user: tripl3inf
-# sudo_user: "{{ deploy_user }}"
+  remote_user: tripl3inf
+  sudo_user: root
   sudo: true
 
   vars:
@@ -11,4 +11,3 @@
 
   roles:
     - apps
-    - debug

@@ -1,39 +1,42 @@
 ---
-#- name: Register content/theme directory
-#  command: echo "/srv/{{ wp_project_name }}/content"
-#  register: content_path
 
+- name: Register theme directory
+  command: "echo /srv/{{env}}/{{ wp_project_name }}/content/themes"
+  register: theme_path
 
-- name: Create WP content directory
-  file: path=/srv/{{ wp_project_name }}/content
+- name: Create WP theme directory
+  file: path={{theme_path.stdout}}
         state=directory
         mode=0755
-  register: content_path
+  register: theme
 
-- debug: var=content_path.path
+#- debug: var=content_path.path
 
 - name: Checkout theme base from REPO
-  git: repo=git@github.com:tripl3inf/ten10_app.git dest={{content_path.path}}
-       version={{ theme_repo_branch | default (default_theme_branch) }}
+  git: repo={{theme_repo_url}} dest={{theme_path.stdout}}/{{theme_name}}
        accept_hostkey=yes
        force=yes
+      # version={{theme_repo_branch|default(omit)}}
   sudo: false
 #  sudo_user: "{{ deploy_user }}"
 
 
-- name: Composer install
-  shell: cd {{content_path.path}}; composer install
+#- name: Composer install
+#  shell: cd {{theme_path.stdout}}; composer install
 
 - name: Build theme
-  shell: cd {{content_path.path}}/themes/ten10_roots; {{ item }}
+  shell: cd {{theme_path.stdout}}/{{theme_name}}; {{ item }}
   ignore_errors: true
   with_items:
-    - npm install
+    - sudo npm install
     - bower install
     - grunt build
-  notify:
-  - restart nginx
-  - restart php-fpm
+  sudo: false
+  notify: restart php-fpm
+
+- name: Wait to restart nginx
+  pause: seconds=10
+  notify: restart nginx
 
 
 

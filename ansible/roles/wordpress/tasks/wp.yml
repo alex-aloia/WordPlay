@@ -1,19 +1,27 @@
 ---
+- name: Register project path
+  command: "echo /srv/{{env}}/{{wp_project_name}}"
+  register: project_path
+  tags: dbg
+
 - name: Fetch random salts for Wordpress config
   local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
   register: "wp_salt"
   sudo: false
+  tags: dbg
 
 - name: Create wp-config file
-  template: src="template_wp-config.php" dest="/srv/{{ wp_project_name }}/wp-config.php"
+  template: src="template_wp-config.php" dest="{{project_path.stdout}}/wp-config.php"
   sudo: false
+  register: "{{env}}"
+  tags: dbg
 
 - name: Copy index.php file
-  template: src="template_wp_index.php" dest="/srv/{{ wp_project_name }}/index.php"
+  template: src="template_wp_index.php" dest="{{project_path.stdout}}/index.php"
   sudo: false
 
 - name: Download WP core files
-  command: wp core download --path="/srv/{{ wp_project_name }}/wordpress/"
+  command: wp core download --path="{{project_path.stdout}}/wordpress/"
   sudo: false
   ignore_errors: true
   register: wp_core_files
@@ -21,7 +29,7 @@
 - name: WP installed?
   command: wp core is-installed --allow-root
   args:
-    chdir: "/srv/{{ wp_project_name }}/wordpress"
+    chdir: "{{project_path.stdout}}/wordpress"
   when: wp_core_files | changed
   register: site_status
   ignore_errors: true
@@ -36,9 +44,11 @@
            --admin_email="{{ wp_admin_email }}"
            --path="wordpress"
   args:
-    chdir: "/srv/{{ wp_project_name }}"
+    chdir: "{{project_path.stdout}}"
   when: wp_core_files | changed
-  notify:
-    - restart nginx
-    - restart php-fpm
+  #notify: restart nginx
+
+#- name: Wait to restart php-fpm
+#  pause: seconds=10
+#  notify: restart php-fpm
 

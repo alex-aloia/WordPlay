@@ -4,4 +4,4 @@ deploy_groups: www-data
 #! Default password is 'deploy' -- generated from sha-512 hash -- ex: 'mkpasswd -m sha-512'
 #deploy_passwd: "$6$XCjEALd2uWfHv$/FNr5bwaaeOmKaouj/7KDiEF
 #.p3CtbHvsEVkAvLl/Ojoebgox7YU8dpLV2g08u5TD2JhrVKXBFrflN20fyx7Y."
-deploy_key: "../files/deploy_default.pub"
+deploy_key: "~/.ssh/t3i_deploy.pub"

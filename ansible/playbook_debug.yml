@@ -4,7 +4,8 @@
   user: "{{ deploy_user }}"
   remote_user: "{{ deploy_user }}"
   vars:
-    wp_project_name: wptest
+    deploy_user: tripl3inf
+    wp_project_name: t3inf.com
 
   roles:
   - debug
