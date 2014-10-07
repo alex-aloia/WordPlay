@@ -1,0 +1,11 @@
+name: debug {{ wp_project_name }}
+root: ~/srv/{{ wp_project_name }}
+
+windows:
+  - logs-nginx:
+      layout: main-horizontal
+      panes:
+        - tail -F /srv/{{ wp_project_name }}/logs/{{ wp_project_name }}_error.log
+        - tail -F /srv/{{ wp_project_name }}/logs/{{ wp_project_name }}_access.log
+        - sudo tail -F /var/log/php5-fpm.log
+  - mc: mc

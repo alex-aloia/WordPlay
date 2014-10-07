@@ -1,0 +1,53 @@
+---
+- name: Create projects site root
+  file: path=/srv/{{env}}/{{ wp_project_name }}
+        state=directory
+        mode=0755
+  register: site_root
+  sudo: true
+
+- name: Create project logs folder
+  file: path={{ site_root.path }}/logs
+        state=directory
+        mode=0755
+  sudo: true
+
+- name: Change site owner to user
+  file: path={{ site_root.path }}
+        owner={{ deploy_user }}
+        group=www-data
+  sudo: true
+
+
+
+
+
+
+# file: path=/srv/{{ wp_project_name }}
+#  shell: chown -R {{ deploy_user }}:www-data /srv/{{ wp_project_name }}
+#- name: Verify permissons (0755)
+#  file: path=/srv/{{ wp_project_name }}
+#        recurse=yes
+
+### BEFORE NFS -- Cant change owership locally with NFS
+#- name: Create web root of sites
+#  file: path="/srv/{{ wp_project_name }}/www"
+#        owner="{{ deploy_user }}"
+#        group=www-data
+#        mode=0755
+#        state=directory
+#  tags: dbg
+#
+#- name: Create logs folder of sites
+#  file: path="/srv/{{ wp_project_name }}/logs"
+#        owner="{{ deploy_user }}"
+#        group=www-data
+#        mode=0755
+#        state=directory
+#
+#- name: Change site owner to user
+#  file: path="/srv/{{ wp_project_name }}"
+#        owner="{{ deploy_user }}"
+#        group=www-data
+#        state=directory
+#        recurse=yes

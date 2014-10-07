@@ -1,0 +1,11 @@
+---
+- name: "Setup Environment"
+  hosts: all
+  user: "{{ deploy_user }}"
+  remote_user: "{{ deploy_user }}"
+  vars:
+    deploy_user: tripl3inf
+    wp_project_name: t3inf.com
+
+  roles:
+  - debug

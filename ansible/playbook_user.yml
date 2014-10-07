@@ -1,0 +1,31 @@
+---
+- name: "Setup Environment"
+  hosts: all
+  user: root
+  #remote_user: root
+  sudo: yes
+
+  vars_prompt:
+  - name: "deploy_user"
+    prompt: "Enter a user name"
+    private: no
+
+  - name: "deploy_passwd"
+    prompt: "Enter a new password for the user"
+    private: yes
+    encrypt: "md5_crypt" #need to have python-passlib installed in local machine before we can use it
+    confirm: yes
+    salt_size: 7
+
+  ### Override the defaults included in user role
+  vars:
+    sudoers_email: true
+    deploy_user: tripl3inf
+    deploy_group: t3i
+    deploy_passwd: "$6$1baYpoEoIHN0$uxzGipd9Tghmw2caXXbjwxWqXY9/iXtIRk/FylrN0XRYRun9GOmw6H0MGOWNFma1NNuBdXaxCIqtqVFBPg/l2."
+    deploy_key:"~/.ssh/t3i_deploy"
+
+  roles:
+  - user
+
+

@@ -1,0 +1,6 @@
+---
+common:children:
+- vm
+
+vm:
+- vflowbox

@@ -1,0 +1,19 @@
+---
+- name: "Setup Environment"
+  hosts: all
+  remote_user: "{{ deploy_user }}"
+  sudo_user: root
+  sudo: true
+  # speed up dev -- turn off fact gather
+  #gather_facts: no
+
+  ### Override the defaults included in user role
+  vars:
+    #theme_repo_url: git@github.com:tripl3inf/ten10_app.git
+    #deploy_user: tripl3inf
+
+  roles:
+  - apps
+  - debug
+  - wordpress
+

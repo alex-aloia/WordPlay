@@ -1,0 +1,14 @@
+#do_hostname: t3inf
+#do_admin: tripl3inf
+#do_email: tripl3infinity@gmail.com
+#my_pub_key: "{{ lookup('file', '~/.ssh/t3i_deploy.pub') }}"
+#
+## digital ocean credentials
+#api_key: 1687f5e09e89bec0bd7edbd687857bb9
+#client_id: 716b8342df7e2e382bac54c93e529a76
+#
+#image_id: 6510539
+#region_id: 8
+
+ssh_group: sshusers
+sudo_group: sudousers

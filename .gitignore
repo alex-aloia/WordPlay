@@ -1,0 +1,16 @@
+.idea/**
+srv/*
+.vagrant/**
+*.log
+
+ansible/hosts/hosts.yml
+Vagrantfile
+vagrant-flow_ansible_inventory
+
+# DEV files
+DeveloperPlayBooks
+ansible-examples
+bedrock-ansible
+
+
+

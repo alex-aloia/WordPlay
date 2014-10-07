@@ -1,0 +1,10 @@
+---
+
+- name: Install Grunt
+  npm: name=grunt global=yes state=present
+
+- name: Install Bower
+  npm: name=bower global=yes state=present
+
+- name: Install Grunt-CLI
+  npm: name=grunt-cli global=yes state=present

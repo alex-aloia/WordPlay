@@ -1,0 +1,13 @@
+---
+- name: "Setup Environment"
+  hosts: all
+  remote_user: tripl3inf
+  sudo_user: root
+  sudo: true
+
+  vars:
+    deploy_user: tripl3inf
+    wp_project_name: t3inf.com
+
+  roles:
+    - apps

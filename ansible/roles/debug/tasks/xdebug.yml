@@ -1,0 +1,37 @@
+---
+
+- name: Create Xdebug install location
+  file: state=directory
+        dest=/home/{{deploy_user}}/xdebug
+  register: xdebug_location
+
+- debug: var=xdebug_location
+
+- name: Get Xdebug source
+  git: repo=git://github.com/xdebug/xdebug.git
+       dest=/home/{{ deploy_user }}/xdebug
+       accept_hostkey=yes
+  when: xdebug_location | changed
+
+- name: Install Xdebug
+  shell: "cd /home/{{ deploy_user }}/xdebug; {{ item }}"
+  sudo: false
+  with_items:
+    - /usr/bin/phpize
+    - ./configure --enable-xdebug
+    - make
+    - sudo make install
+  when: xdebug_location | changed
+
+- name: Add Xdebug to php.ini
+  sudo: true
+  sudo_user: root
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              line='zend_extension = /usr/lib/php5/20121212/xdebug.so'
+              regexp='^zend_extension'
+  notify:
+    - restart php-fpm
+    - restart nginx
+  when: xdebug_location | changed
+
+
