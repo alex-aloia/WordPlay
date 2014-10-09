@@ -1,0 +1,19 @@
+---
+- name: "Deploy update to remote - {{env}}"
+  hosts: all
+  remote_user: "{{ deploy_user }}"
+  #sudo: true
+  sudo_user: root
+  tasks:
+    - include: roles/wordpress/tasks/deploy.yml
+  vars:
+    env: staging
+    wp_project_name: t3inf ### TODO: change mysql db user from project name -- messes up if punctuation is used
+    wp_home_url: t3inf.dev
+    wp_db_name: DB_t3inf_dev
+    wp_db_pass: tripl3World!
+    wp_admin_pass: tripl3World!
+    theme: { name: roots, url: 'git@github.com:tripl3inf/WordPlay-Theme.git', branch: t3inf.com }
+
+  handlers:
+    - include: roles/wordpress/handlers/main.yml

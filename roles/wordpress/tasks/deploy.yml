@@ -1,0 +1,63 @@
+---
+- name: Create release timestamp
+  command: date +%Y%m%d%H%M%S
+  register: timestamp
+
+- name: Create REPO directory
+  file: path=/srv/{{env}}/{{wp_project_name}}/repo
+        state=directory
+        owner={{deploy_user}}
+        group=www-data
+  register: repo
+  sudo: true
+
+- name: Name release directory
+  command: "echo {{repo.path}}/{{ timestamp.stdout }}"
+  register: release_path
+
+- debug: var=release_path
+    #msg='Release Path:'
+
+- debug: var=timestamp.stdout
+    #msg='Time:'
+
+
+- name: Checkout theme base from REPO
+  git: repo={{ theme.url }} dest={{ release_path.stdout }}
+       accept_hostkey=yes
+       version={{ theme.branch }}
+  sudo: false
+
+#- name: Composer install
+#  shell: cd {{ release_path.stdout }}; composer install
+
+- name: NPM install
+  npm: path={{ release_path.stdout }}
+  sudo: yes
+
+
+
+  #shell: cd {{ release_path.stdout }}; {{ item }}
+#  ignore_errors: true
+#  with_items:
+#    - sudo npm install
+#    - bower update
+#    - gulp less
+#  sudo: false
+  #notify: restart php-fpm
+
+#- name: Update to current
+#  file: >
+#    state=link
+#    path=/srv/{{env}}/{{ wp_project_name }}/content/themes/{{theme.name}}
+#    src={{ release_path.stdout }}
+#    force=yes
+#  sudo: true
+#
+#- name: Wait to restart nginx
+#  pause: seconds=10
+#  notify: restart nginx
+#
+#- name: php-fpm restart
+#  shell: service php5-fpm restart
+#  sudo: true

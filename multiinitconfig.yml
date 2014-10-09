@@ -1,8 +1,0 @@
----
-:intnetName: vflowbox
-machines:
-  - name: vflowbox
-    url: ubuntu/trusty64
-    digitalOceanRegion: nyc2
-    digitalOceanImage: Ubuntu 14.04 x64
-    ram: 512MB 

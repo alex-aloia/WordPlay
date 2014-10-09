@@ -6,18 +6,18 @@
   sudo_user: root
 
   tasks:
-#    - include: roles/wordpress/tasks/structure.yml
-#    - include: roles/wordpress/tasks/db.yml
-#    - include: roles/wordpress/tasks/nginx.yml
-#    - include: roles/wordpress/tasks/php-fpm.yml
-#    - include: roles/wordpress/tasks/wp.yml
-#    - include: roles/wordpress/tasks/theme.yml
+    - include: roles/wordpress/tasks/structure.yml
+    - include: roles/wordpress/tasks/db.yml
+    - include: roles/wordpress/tasks/nginx.yml
+    - include: roles/wordpress/tasks/php-fpm.yml
+    - include: roles/wordpress/tasks/wp.yml
+    - include: roles/wordpress/tasks/theme.yml
     - include: roles/debug/tasks/webgrind.yml
   vars:
-    env: prod
+    env: staging
     wp_project_name: t3inf ### TODO: change mysql db user from project name -- messes up if puctuation is used
-    wp_home_url: t3inf.com
-    wp_db_name: DB_t3inf_prod
+    wp_home_url: t3inf.dev
+    wp_db_name: DB_t3inf_dev
     wp_db_pass: tripl3World!
     wp_admin_pass: tripl3World!
     theme_name: roots

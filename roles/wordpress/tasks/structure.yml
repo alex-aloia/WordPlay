@@ -12,11 +12,12 @@
         mode=0755
   sudo: true
 
-- name: Change site owner to user
-  file: path={{ site_root.path }}
-        owner={{ deploy_user }}
-        group=www-data
-  sudo: true
+#- name: Change site owner to user
+#  file: path={{ site_root.path }}
+#        owner={{ deploy_user }}
+#        group=www-data
+#  sudo: true
+#  when: "{{env}} not dev"
 
 
 
