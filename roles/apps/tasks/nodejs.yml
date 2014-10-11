@@ -4,3 +4,5 @@
 
  - name: Install NodeJS
    apt: pkg=nodejs state=present
+   sudo: no
+   remote_user: {{deploy_user}}
