@@ -15,9 +15,9 @@
 # configure wordpress
 - include: wp.yml
 
-# configure theme building environment
-- include: theme.yml
-  tags: theme
+## configure theme building environment
+#- include: theme.yml
+#  tags: theme
 
 ## Staging
 #- include: structure.yml env=staging

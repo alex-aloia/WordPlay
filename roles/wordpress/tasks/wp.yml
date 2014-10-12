@@ -1,6 +1,6 @@
 ---
 - name: Register project path
-  command: "echo /srv/{{env}}/{{wp_project_name}}"
+  command: "echo /srv/{{project.env}}/{{project.name}}"
   register: project_path
   tags: dbg
 
@@ -12,13 +12,10 @@
 
 - name: Create wp-config file
   template: src="template_wp-config.php" dest="{{project_path.stdout}}/wp-config.php"
-  sudo: false
-  register: "{{env}}"
-  tags: dbg
+  register: "{{project.env}}"
 
 - name: Copy index.php file
   template: src="template_wp_index.php" dest="{{project_path.stdout}}/index.php"
-  sudo: false
 
 - name: Download WP core files
   command: wp core download --path="{{project_path.stdout}}/wordpress/"
@@ -37,11 +34,11 @@
 - name: Install WP
   command: wp core install
            --allow-root
-           --url="{{ wp_home_url }}"
-           --title="{{ wp_project_name }}"
+           --url="{{ project.home_url }}"
+           --title="{{ project.name }}"
            --admin_user="{{ deploy_user }}"
-           --admin_password="{{ wp_admin_pass }}"
-           --admin_email="{{ wp_admin_email }}"
+           --admin_password="{{ project.admin_pass }}"
+           --admin_email="{{ project.admin_email }}"
            --path="wordpress"
   args:
     chdir: "{{project_path.stdout}}"

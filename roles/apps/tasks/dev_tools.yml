@@ -1,10 +1,13 @@
 ---
+- name: Copy package.json to remote
+  copy: src='../files/package.json'
+        dest='/home/{{deploy_user}}'
+        mode=0777
+        owner={{deploy_user}}
+  register: npm
 
-- name: Install Grunt
-  npm: name=grunt global=yes state=present
+- name: Install from package.json
+  npm: path={{npm.path|dirname}}
+       global=yes
+       state=present
 
-- name: Install Bower
-  npm: name=bower global=yes state=present
-
-- name: Install Grunt-CLI
-  npm: name=grunt-cli global=yes state=present

@@ -1,6 +1,6 @@
 ---
 - name: Copy php-fpm configuration
   template: src="template_php-fpm.conf"
-            dest="/etc/php5/fpm/pool.d/{{ env | default(prod) }}_{{ wp_project_name }}.conf"
+            dest="/etc/php5/fpm/pool.d/{{ project.env | default(prod) }}_{{ project.name }}.conf"
   notify: restart php-fpm
   sudo: true

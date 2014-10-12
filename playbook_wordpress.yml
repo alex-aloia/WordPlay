@@ -20,8 +20,9 @@
     wp_db_name: DB_t3inf_dev
     wp_db_pass: tripl3World!
     wp_admin_pass: tripl3World!
-    theme_name: roots
-    theme_repo_url: git@github.com:roots/roots.git
+    theme_name: wordplay
+    theme_repo_url: git@github.com:tripl3inf/WordPlay-Theme.git
+    theme_vs: outside
 
   handlers:
     - include: roles/wordpress/handlers/main.yml

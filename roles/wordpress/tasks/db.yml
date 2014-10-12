@@ -1,6 +1,6 @@
 ---
 - name: Create database of sites
-  mysql_db: name="{{ env | default(prod) }}_{{ wp_project_name }}"
+  mysql_db: name="{{ project.env | default(prod) }}_{{ project.name }}"
             state=present
             login_host="localhost"
             login_user=root
@@ -9,11 +9,12 @@
 
 - name: Create/assign database user to db and grant permissions
   mysql_user: name="{{ deploy_user }}"
-              password="{{ wp_db_pass }}"
-              priv="{{ env | default(prod) }}_{{ wp_project_name }}.*:ALL"
+              password="{{ project.db_pass }}"
+              priv=*.*:ALL
               state=present
               login_host="localhost"
               login_user=root
               login_password="{{ sql_root_pass }}"
   sudo: true
 
+#priv="{{ project.env | default(prod) }}_{{ project.name }}.*:ALL"

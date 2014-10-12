@@ -1,19 +1,53 @@
 ---
-- name: "Deploy update to remote - {{env}}"
+- name: "Deploy project to ***{{project.env}}***"
   hosts: all
   remote_user: "{{ deploy_user }}"
   #sudo: true
   sudo_user: root
   tasks:
+    - include: roles/wordpress/tasks/structure.yml
+      sudo: yes
+    - include: roles/wordpress/tasks/db.yml
+    - include: roles/wordpress/tasks/nginx.yml
+    - include: roles/wordpress/tasks/php-fpm.yml
+    - include: roles/wordpress/tasks/wp.yml
     - include: roles/wordpress/tasks/deploy.yml
   vars:
-    env: staging
-    wp_project_name: t3inf ### TODO: change mysql db user from project name -- messes up if punctuation is used
-    wp_home_url: t3inf.dev
-    wp_db_name: DB_t3inf_dev
-    wp_db_pass: tripl3World!
-    wp_admin_pass: tripl3World!
-    theme: { name: roots, url: 'git@github.com:tripl3inf/WordPlay-Theme.git', branch: t3inf.com }
-
+    deploy_user: tripl3inf
+    sql_root_pass: sql_pass
+    project:
+      name: t3inf ### TODO: change mysql db user from project name -- messes up if punctuation is used
+      env: dev
+      node_vs: 10.0.32
+      home_url: t3inf.com
+      db_name: DB_t3inf_dev
+      db_pass: tripl3World!
+      admin_pass: tripl3World!
+      admin_email: tripl3infinity@gmail.com
+      auto_update: no
+      theme:
+        name: roots
+        url: 'git@github.com:tripl3inf/WordPlay-Theme.git'
+        branch: outside
+      vbox: false
+      memcached_sessions: false
   handlers:
     - include: roles/wordpress/handlers/main.yml
+
+
+
+
+#    env: staging
+#    wp_project_name: t3inf ### TODO: change mysql db user from project name -- messes up if punctuation is used
+#    wp_home_url: t3inf.dev
+#    wp_db_name: DB_t3inf_dev
+#    wp_db_pass: tripl3World!
+#    wp_admin_pass: tripl3World!
+#    theme:
+#      name: roots
+#      url: 'git@github.com:tripl3inf/WordPlay-Theme.git'
+#      branch: t3inf.com
+
+
+
+

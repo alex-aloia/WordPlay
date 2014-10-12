@@ -1,2 +1,5 @@
-env: prod
-default_theme_branch: HEAD
+project:
+  node_version: 10.0.32
+
+#env: prod
+#default_theme_branch: HEAD

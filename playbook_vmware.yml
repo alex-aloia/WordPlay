@@ -1,0 +1,23 @@
+---
+- name: "Setup VMWare Image"
+  hosts: 127.0.0.1
+  connection: local
+  sudo: yes
+  gather_facts: yes
+
+  vars:
+    deploy_user: tripl3inf
+    deploy_passwd: tripl3World!
+    deploy_group: t3i
+    sudoers_email: true
+    deploy_key: 'roles/user/files/t3i_deploy.pub'
+
+  roles:
+  - vmware
+  - user
+  - apps
+
+#  tasks:
+#  - name: Update apt and install vmware tools
+#    apt: name=open-vm-tools state=present update_cache=yes
+

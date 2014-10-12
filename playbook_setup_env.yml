@@ -11,3 +11,4 @@
 
   roles:
     - apps
+    - env_vars

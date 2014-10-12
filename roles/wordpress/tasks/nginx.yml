@@ -1,6 +1,6 @@
 ---
  - name: Register Nginx configuration file name
-   command: "echo {{ env | default(prod) }}_{{ wp_project_name }}.conf"
+   command: "echo {{ project.env | default(prod) }}_{{ project.name }}.conf"
    register: config
 
  - debug: vars=config.stdout
@@ -12,7 +12,7 @@
 
  - name: Add sendfile off param if VBox ( http://wiki.nginx.org/Pitfalls )
    lineinfile: dest=config insertafter="^listen" line="sendfile off;"
-   when: VBox
+   when: 'project.vbox == true'
 
  - name: Enable WordPress site
    file: src=/etc/nginx/sites-available/{{config.stdout}}
@@ -22,9 +22,9 @@
          state=link
    sudo: true
 
- - name: Open firewall for http
-   shell: ufw allow http
-   sudo: true
+# - name: Open firewall for http
+#   shell: ufw allow http
+#   sudo: true
 
 #   notify: restart nginx
 

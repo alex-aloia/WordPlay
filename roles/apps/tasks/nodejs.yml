@@ -1,8 +1,8 @@
 ---
  - name: Add NodeJS apt repo
-   apt_repository: repo='ppa:chris-lea/node.js' state=present update_cache=yes
+   shell: curl -sL https://deb.nodesource.com/setup | sudo bash -
 
  - name: Install NodeJS
    apt: pkg=nodejs state=present
-   sudo: no
-   remote_user: {{deploy_user}}
+   sudo: yes
+#   remote_user: '{{deploy_user}}'

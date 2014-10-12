@@ -3,61 +3,69 @@
   command: date +%Y%m%d%H%M%S
   register: timestamp
 
-- name: Create REPO directory
-  file: path=/srv/{{env}}/{{wp_project_name}}/repo
-        state=directory
-        owner={{deploy_user}}
-        group=www-data
-  register: repo
-  sudo: true
+- name: Set release directory
+  set_fact: path="/srv/{{project.env}}/{{project.name}}/repo/{{ timestamp.stdout }}"
+  register: release
+  #sudo: true
 
-- name: Name release directory
-  command: "echo {{repo.path}}/{{ timestamp.stdout }}"
-  register: release_path
-
-- debug: var=release_path
-    #msg='Release Path:'
-
-- debug: var=timestamp.stdout
-    #msg='Time:'
-
-
-- name: Checkout theme base from REPO
-  git: repo={{ theme.url }} dest={{ release_path.stdout }}
-       accept_hostkey=yes
-       version={{ theme.branch }}
+- name: Checkout theme base from repo
+  git: repo={{ project.theme.url }} dest="{{release.ansible_facts.path}}/" version={{project.theme.branch | default(HEAD)}} accept_hostkey=yes
   sudo: false
 
-#- name: Composer install
-#  shell: cd {{ release_path.stdout }}; composer install
+- debug: var=release.ansible_facts.path
 
-- name: NPM install
-  npm: path={{ release_path.stdout }}
-  sudo: yes
-
+#- name: Register theme(s) #TODO: add support for multiple themes
+#  command: "echo {{release_path.stdout}}/themes/{{theme.name}}"
+#  register: theme_path
 
 
-  #shell: cd {{ release_path.stdout }}; {{ item }}
-#  ignore_errors: true
-#  with_items:
-#    - sudo npm install
-#    - bower update
-#    - gulp less
+- name: Check if Node version config file is present
+  command: 'cat {{release.ansible_facts.path}}/.nvmrc'
+  register: nvmrc_result
+  failed_when: "'no such file' in nvmrc_result.stderr"
+
+- name: Set default Node version
+  lineinfile: dest='{{release.ansible_facts.path}}/.nvmrc' line='{{project.node_vs}}' create=yes state=present backup=no
+  when: nvmrc_result | failed
+
+- debug: var=nvmrc_result.stderr
+
+
+
+- name: Composer install
+  shell: cd {{release.ansible_facts.path}}; composer install
+
+- name: NPM Install
+  npm: path={{release.ansible_facts.path}}/themes/{{project.theme.name}}
+
+
+- name: Update Bower, run Gulp
+  shell: cd {{release.ansible_facts.path}}/themes/{{project.theme.name}}; {{ item }}
+  ignore_errors: true
+  with_items:
+    - bower update --silent
+    - gulp less
+    - npm install
 #  sudo: false
-  #notify: restart php-fpm
 
-#- name: Update to current
-#  file: >
-#    state=link
-#    path=/srv/{{env}}/{{ wp_project_name }}/content/themes/{{theme.name}}
-#    src={{ release_path.stdout }}
-#    force=yes
+- name: Update to current
+  file: >
+    state=link
+    path=/srv/{{project.env}}/{{ project.name }}/content
+    src={{release.ansible_facts.path}}
+  notify: restart nginx
 #  sudo: true
+##  sudo_user: '{{deploy_user}}'
 #
+#
+#
+#
+#
+##
 #- name: Wait to restart nginx
 #  pause: seconds=10
 #  notify: restart nginx
-#
+
 #- name: php-fpm restart
 #  shell: service php5-fpm restart
 #  sudo: true

@@ -1,38 +1,59 @@
 ---
 - name: Create projects site root
-  file: path=/srv/{{env}}/{{ wp_project_name }}
+  file: path=/srv/{{project.env}}/{{ project.name }}
         state=directory
-        mode=0755
   register: site_root
   sudo: true
 
-- name: Create project logs folder
-  file: path={{ site_root.path }}/logs
+- name: Create project directory structure
+  file: path={{ site_root.path }}/{{item}}
         state=directory
-        mode=0755
+  with_items:
+    - logs
+    - repo
   sudo: true
+
+- name: Set permisions on project env
+  file: path=/srv/{{project.env}}
+        state=directory
+        owner=www-data
+        group=www-data
+        recurse=yes
+        mode=0775
+  sudo: true
+
+
+#- name: Create REPO directory
+#  file: path=/srv/{{project.env}}/{{project.name}}/repo
+#        state=directory
+#        recurse=true
+#        owner={{deploy_user}}
+#        group=www-data
+#        mode=755
+#  register: repo
+#  sudo: true
 
 #- name: Change site owner to user
 #  file: path={{ site_root.path }}
 #        owner={{ deploy_user }}
 #        group=www-data
 #  sudo: true
-#  when: "{{env}} not dev"
+#  when: "{{project.env}} not dev"
 
 
 
 
 
 
-# file: path=/srv/{{ wp_project_name }}
-#  shell: chown -R {{ deploy_user }}:www-data /srv/{{ wp_project_name }}
+# file: path=/srv/{{ project.name }}
+#  shell: chown -R {{ deploy_user }}:www-data /srv/{{ project.name }}
 #- name: Verify permissons (0755)
-#  file: path=/srv/{{ wp_project_name }}
+#  file: path=/srv/{{ project.name }}
 #        recurse=yes
 
 ### BEFORE NFS -- Cant change owership locally with NFS
 #- name: Create web root of sites
-#  file: path="/srv/{{ wp_project_name }}/www"
+#  file: path="/srv/{{ project.name }}/www"
 #        owner="{{ deploy_user }}"
 #        group=www-data
 #        mode=0755
@@ -40,14 +61,14 @@
 #  tags: dbg
 #
 #- name: Create logs folder of sites
-#  file: path="/srv/{{ wp_project_name }}/logs"
+#  file: path="/srv/{{ project.name }}/logs"
 #        owner="{{ deploy_user }}"
 #        group=www-data
 #        mode=0755
 #        state=directory
 #
 #- name: Change site owner to user
-#  file: path="/srv/{{ wp_project_name }}"
+#  file: path="/srv/{{ project.name }}"
 #        owner="{{ deploy_user }}"
 #        group=www-data
 #        state=directory

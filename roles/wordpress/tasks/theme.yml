@@ -1,37 +1,34 @@
 ---
 
 - name: Register theme directory
-  command: "echo /srv/{{env}}/{{ wp_project_name }}/content/themes"
+  command: "echo /srv/{{project.env}}/{{ project.name }}/content/themes"
   register: theme_path
 
 - name: Create WP theme directory
   file: path={{theme_path.stdout}}
         state=directory
-        mode=0755
+        mode=0775
   register: theme
 
 #- debug: var=content_path.path
 
 - name: Checkout theme base from REPO
-  git: repo={{theme_repo_url}} dest={{theme_path.stdout}}/{{theme_name}}
+  git: repo={{project.theme.url}} dest={{theme_path.stdout}}/{{project.theme.name}}
        accept_hostkey=yes
        force=yes
-      # version={{theme_repo_branch|default(omit)}}
+       version=outside
   sudo: false
 #  sudo_user: "{{ deploy_user }}"
 
 
-#- name: Composer install
-#  shell: cd {{theme_path.stdout}}; composer install
-
 - name: Build theme
-  shell: cd {{theme_path.stdout}}/{{theme_name}}; {{ item }}
+  shell: cd {{theme_path.stdout}}/{{project.theme.name}}; {{ item }}
   ignore_errors: true
   with_items:
-    - sudo npm install
-    - bower install
+    - npm install
+    - bower install --silent
     - grunt build
-  sudo: false
+  sudo: true
   notify: restart php-fpm
 
 - name: Wait to restart nginx
