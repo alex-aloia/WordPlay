@@ -6,8 +6,8 @@
   roles:
   - do-droplet
   vars:
-    api_key: 1687f5e09e89bec0bd7edbd687857bb9
-    client_id: 716b8342df7e2e382bac54c93e529a76
+    api_key:
+    client_id:
     my_pub_key: "{{ lookup('file', '~/.ssh/t3i_deploy.pub') }}"
     do_hostname: t3inf.com
     do_admin: tripl3inf
