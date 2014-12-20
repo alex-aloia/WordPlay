@@ -33,7 +33,7 @@
 
 
 - name: Composer install
-  shell: cd {{release.ansible_facts.path}}; composer install
+  shell: cd {{release.ansible_facts.path}}; composer update ### or install?
 
 - name: NPM Install
   npm: path={{release.ansible_facts.path}}/themes/{{project.theme.name}}

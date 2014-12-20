@@ -14,15 +14,15 @@
     - include: roles/wordpress/tasks/theme.yml
     - include: roles/debug/tasks/webgrind.yml
   vars:
-    env: staging
+    env: dev
     wp_project_name: t3inf ### TODO: change mysql db user from project name -- messes up if puctuation is used
-    wp_home_url: t3inf.dev
+    wp_home_url: dev.t3inf.com
     wp_db_name: DB_t3inf_dev
     wp_db_pass: tripl3World!
     wp_admin_pass: tripl3World!
-    theme_name: wordplay
+    theme_name: t3i_roots
     theme_repo_url: git@github.com:tripl3inf/WordPlay-Theme.git
-    theme_vs: outside
+    theme_vs: feat_logoAnimation
 
   handlers:
     - include: roles/wordpress/handlers/main.yml

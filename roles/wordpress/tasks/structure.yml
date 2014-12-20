@@ -16,10 +16,8 @@
 - name: Set permisions on project env
   file: path=/srv/{{project.env}}
         state=directory
-        owner=www-data
-        group=www-data
         recurse=yes
-        mode=0775
+        mode=0777
   sudo: true
 
 

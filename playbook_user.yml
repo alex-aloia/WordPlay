@@ -1,8 +1,8 @@
 ---
 - name: "Setup Environment"
   hosts: all
-  user: root
-  #remote_user: root
+  user: tripl3inf
+  remote_user: root
   sudo: yes
 
   vars_prompt:

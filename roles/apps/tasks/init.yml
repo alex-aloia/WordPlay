@@ -23,6 +23,6 @@
     - htop
     #- fail2ban
 
-  - name: Update apt
-    sudo: yes
-    apt: update_cache=yes
+#  - name: Update apt
+#    sudo: yes
+#    apt: update_cache=yes

@@ -3,7 +3,7 @@
   copy: src='../files/package.json'
         dest='/home/{{deploy_user}}'
         mode=0777
-        owner={{deploy_user}}
+        owner='{{deploy_user}}'
   register: npm
 
 - name: Install from package.json

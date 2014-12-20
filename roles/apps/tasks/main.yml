@@ -18,6 +18,6 @@
 - include: wp-cli.yml
 - include: bundler.yml
 - include: memcached.yml
-- include: dev_tools.yml
-  tags:
-    - dev_tools
+#- include: dev_tools.yml
+#  tags:
+#    - dev_tools
