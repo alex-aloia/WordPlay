@@ -3,19 +3,25 @@
   connection: local
   #serial: 1
   gather_facts: False
+
   roles:
   - do-droplet
+
   vars:
-    api_key:
-    client_id:
-    my_pub_key: "{{ lookup('file', '~/.ssh/t3i_deploy.pub') }}"
-    do_hostname: t3inf.com
+    api_key: d2556558d312dd386cfbb59e12f36004
+    client_id: 716b8342df7e2e382bac54c93e529a76
+    my_pub_key: "{{ lookup('file', '~/.ssh/DigitalOcean.pub') }}"
+    ssh_key_name: master
+    do_hostname: tripl3inf.com
     do_admin: tripl3inf
-    image_id: 6510539
+    image_id: 7111343
     region_id: 8
 
 - hosts: new_drops
   gather_facts: True
+  vars:
+    my_pub_key: "{{ lookup('file', '~/.ssh/DigitalOcean.pub') }}"
+
   vars_prompt:
   - name: "deploy_user"
     prompt: "Enter a user name"
@@ -32,10 +38,9 @@
   #sudo: true
 
   ### Override the defaults included in user role
-  vars:
-    sudoers_email: true
-    deploy_group: t3i
+  #vars:
+  #  sudoers_email: true
+  #  deploy_group: t3i
   roles:
   - user
-  - apps
-
+#  - apps

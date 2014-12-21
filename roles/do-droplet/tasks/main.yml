@@ -2,7 +2,7 @@
   digital_ocean: >
     state=present
     command=ssh
-    name=t3i_key
+    name={{ssh_key_name}}
     client_id="{{ client_id }}"
     api_key="{{ api_key }}"
     ssh_pub_key="{{ my_pub_key }}"

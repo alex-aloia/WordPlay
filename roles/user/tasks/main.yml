@@ -1,19 +1,20 @@
 ---
-- name: Setup deploy group
-  group: name={{ deploy_group }} state=present
+- name: Setup deploy user group
+  group: name={{ sudo_group }} state=present
   sudo: true
 
 - name: Setup deploy user
   user: name={{ deploy_user }}
-        group={{ deploy_group }}
-        groups={{ deploy_groups }}
+        group={{ sudo_group }}
+        groups={{ deploy_user_groups }}
         shell=/bin/bash
         password={{ deploy_passwd }}
         state=present
 
 - name: Add public key to server
-  authorized_key: user={{ deploy_user }} key="{{ item }}"
-  with_file: deploy_key
+  authorized_key: user={{ deploy_user }} key="{{ my_pub_key }}"
+#  with_file: deploy_key
+
 
 - name: Create tmp file for sudoers additions
   command: cp -f /etc/sudoers /etc/sudoers.tmp
@@ -21,10 +22,6 @@
 
 - name: Create sudoers file backup
   command: cp -f /etc/sudoers /etc/sudoers.{{ ansible_date_time.date }}_{{ ansible_date_time.time }}.bak
-  sudo: true
-
-- name: Sudoers | update sudoers file and validate
-  lineinfile: "dest=/etc/sudoers.tmp line='{{ deploy_user }} ALL=(ALL) NOPASSWD: ALL' regexp='^{{deploy_user }}' state=present"
   sudo: true
 
 - name: Set SSH-Agent environment var in sudoers
@@ -35,6 +32,24 @@
     line='Defaults env_keep+=SSH_AUTH_SOCK'
     insertafter='^Defaults'
 
+- name: Ensure sudoers.d is enabled
+  lineinfile: >
+    dest=/etc/sudoers.tmp
+    regexp='^#includedir /etc/sudoers.d'
+    line='#includedir /etc/sudoers.d'
+    state=present backup=yes
+
+- name: Set up password-less sudo for admin users
+  copy: >
+    content='%{{ sudo_group }} ALL=(ALL) NOPASSWD:ALL'
+    dest=/etc/sudoers.d/admin
+    owner=root group=root mode=0440
+
+
+#- name: Sudoers | update sudoers file and validate
+#  lineinfile: "dest=/etc/sudoers.tmp line='{{ deploy_user }} ALL=(ALL) NOPASSWD: ALL' regexp='^{{deploy_user }}' state=present"
+#  sudo: true
+
 - name: Check sudoers file and make current
   shell: visudo -q -c -f /etc/sudoers.tmp && cp -f /etc/sudoers.tmp /etc/sudoers
   sudo: true
@@ -44,10 +59,7 @@
   sudo: true
   notify: restart sshd
 
-#- name: Re-generate server ssh keys
-#  shell: dpkg-reconfigure openssh-server
-#  sudo: true
-#  notify: restart sshd
+
 
 
 - name: Configure firewall for SSH
@@ -66,7 +78,7 @@
   with_items:
     - { key: 'PermitRootLogin',        value: 'no'}
     - { key: 'PasswordAuthentication', value: 'no'}
-    - { key: 'AllowGroups',            value: "{{deploy_group}}"}
+    - { key: 'AllowGroups',            value: "{{sudo_group}}"}
     - { key: 'MaxAuthTries',           value: "5"}
     - { key: 'LoginGraceTime',         value: "60"}
     - { key: 'MaxSessions',            value: "5"}
