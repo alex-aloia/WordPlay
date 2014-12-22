@@ -15,7 +15,6 @@
   authorized_key: user={{ deploy_user }} key="{{ my_pub_key }}"
 #  with_file: deploy_key
 
-
 - name: Create tmp file for sudoers additions
   command: cp -f /etc/sudoers /etc/sudoers.tmp
   tags:
@@ -45,7 +44,6 @@
     dest=/etc/sudoers.d/admin
     owner=root group=root mode=0440
 
-
 #- name: Sudoers | update sudoers file and validate
 #  lineinfile: "dest=/etc/sudoers.tmp line='{{ deploy_user }} ALL=(ALL) NOPASSWD: ALL' regexp='^{{deploy_user }}' state=present"
 #  sudo: true
@@ -58,9 +56,6 @@
   shell: rm -rf /etc/ssh/ssh_host_* ; dpkg-reconfigure openssh-server
   sudo: true
   notify: restart sshd
-
-
-
 
 - name: Configure firewall for SSH
   ufw: rule=allow name=OpenSSH
@@ -86,7 +81,4 @@
   notify: restart sshd
 
 
-
-
-#- include: github_key.yml
 

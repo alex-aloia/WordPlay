@@ -1,4 +1,7 @@
+#Create new droplet
 ---
+
+# Ensure SSH Key is present, else upload provided --
 - hosts: 127.0.0.1
   connection: local
   #serial: 1
@@ -8,23 +11,35 @@
   - do-droplet
 
   vars:
-    api_key: d2556558d312dd386cfbb59e12f36004
-    client_id: 716b8342df7e2e382bac54c93e529a76
-    my_pub_key: "{{ lookup('file', '~/.ssh/DigitalOcean.pub') }}"
+    api_key: "{{ lookup('env','DIGITALOCEAN_API_KEY') }}"
+    client_id: "{{ lookup('env','DIGITALOCEAN_CLIENT_ID') }}"
+    my_pub_key: "{{ lookup('file', '/Users/tripl3inf/.ssh/digitalOcean.pub') }}"
     ssh_key_name: master
     do_hostname: tripl3inf.com
-    do_admin: tripl3inf
-    image_id: 7111343
-    region_id: 8
+    #do_admin: tripl3inf
+    image_id: 7111343 #ubuntu 14.10
+    region_id: 8 #nyc3
 
+# When new droplet is ready, provision
 - hosts: new_drops
   gather_facts: True
+  remote_user: root
+  #sudo: true
+
+  roles:
+  - user
+  - apps
+
   vars:
-    my_pub_key: "{{ lookup('file', '~/.ssh/DigitalOcean.pub') }}"
+    my_pub_key: "{{ lookup('file', '/Users/tripl3inf/.ssh/digitalOcean.pub') }}"
 
   vars_prompt:
   - name: "deploy_user"
     prompt: "Enter a user name"
+    private: no
+
+  - name: "deploy_user_email"
+    prompt: "Enter admin email address"
     private: no
 
   - name: "deploy_passwd"
@@ -33,14 +48,4 @@
     encrypt: "md5_crypt" #need to have python-passlib installed in local machine before we can use it
     confirm: yes
     salt_size: 7
-  remote_user: root
-  #sudo_user: root
-  #sudo: true
 
-  ### Override the defaults included in user role
-  #vars:
-  #  sudoers_email: true
-  #  deploy_group: t3i
-  roles:
-  - user
-#  - apps

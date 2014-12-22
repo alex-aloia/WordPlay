@@ -19,7 +19,7 @@
     ssh_key_ids="{{ do_droplet.ssh_key.id }}"
     region_id="{{region_id}}"
     image_id="{{image_id}}"
-    wait_timeout=800
+    wait_timeout=900
   register: do_droplet
 
 - debug: msg="ID is {{ do_droplet.droplet.id }}"
@@ -32,5 +32,5 @@
     groups=new_drops
 
 - name: wait for the host to be hot
-  wait_for: host={{ do_droplet.droplet.ip_address }} port=22 delay=6 timeout=500
+  wait_for: host={{ do_droplet.droplet.ip_address }} port=22 delay=8 timeout=600
 

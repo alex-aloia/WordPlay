@@ -14,7 +14,7 @@
     project:
       name: t3inf ### TODO: change mysql db user from project name -- messes up if punctuation is used
       env: dev
-      node_vs: 10.0.33
+      node_vs: 10.0.34
       home_url: t3inf.com
       db_name: DB_t3inf_dev
       db_pass: tripl3World!
