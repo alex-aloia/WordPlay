@@ -1,23 +1,15 @@
+# Install required applications
+
 ---
-### Install required applications
 - include: init.yml
-- include: marinadb.yml
+- include: maria-db.yml
 - include: nginx.yml
 - include: php55.yml
-### TODO: use nvm to install/manage nodejs
-#- include: nvm.yml
-#  tags:
-#    - nvm
-#  sudo: no
-
+- include: memcached.yml
 - include: nodejs.yml
-  tags:
-    - node
-
 - include: composer.yml
 - include: wp-cli.yml
 - include: bundler.yml
-- include: memcached.yml
-#- include: dev_tools.yml
-#  tags:
-#    - dev_tools
+- include: bower.yml
+- include: gulp.yml
+- include: postfix.yml

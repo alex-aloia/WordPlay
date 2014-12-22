@@ -1,0 +1,5 @@
+# Install Gulp
+
+---
+- name: Install Gulp.js task runner
+  npm: name=gulp global=yes

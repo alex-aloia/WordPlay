@@ -1,8 +1,10 @@
+# install node.js
+
 ---
- - name: Add NodeJS apt repo
-   shell: curl -sL https://deb.nodesource.com/setup | sudo bash -
+ - name: Add NodeJS PPA
+   apt_repository: repo="{{repo.nodejs}}" state=present update_cache=yes
+   #shell: curl -sL https://deb.nodesource.com/setup | sudo bash -
 
  - name: Install NodeJS
-   apt: pkg=nodejs state=present
+   apt: name=nodejs state=present
    sudo: yes
-#   remote_user: '{{deploy_user}}'

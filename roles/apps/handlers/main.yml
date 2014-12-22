@@ -2,6 +2,20 @@
 # restart php-fpm
 - name: restart php-fpm
   service: name=php5-fpm state=restarted
+  remote_user: "{{deploy_user}}"
+  sudo: yes
 
 - name: restart memcached
   service: name=memcached state=restarted
+  remote_user: "{{deploy_user}}"
+  sudo: yes
+
+- name: restart postfix
+  service: name=postfix state=restarted
+  remote_user: "{{deploy_user}}"
+  sudo: yes
+
+- name: update aliases
+  command: newaliases
+  remote_user: "{{deploy_user}}"
+  sudo: yes

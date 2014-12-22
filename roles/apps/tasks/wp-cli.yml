@@ -1,3 +1,5 @@
+# Install Wordpress-CLI
+
 ---
 - name: Install WP-CLI
-  get_url: url="{{ wp_cli_url }}" dest="/usr/local/bin/wp" mode=0755
+  get_url: url="{{repo.wp_cli}}" dest="/usr/local/bin/wp" mode=0755

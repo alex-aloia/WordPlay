@@ -1,0 +1,5 @@
+# Install Bower
+
+---
+- name: Install Bower package manager
+  npm: name=bower global=yes

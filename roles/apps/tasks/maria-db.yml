@@ -1,16 +1,17 @@
----
-# tasks file for mariadb
-- include_vars: ./app-keys.yml
+#   _ __  __ _ _ _(_)__ _   __| | |__
+#  | '  \/ _` | '_| / _` | / _` | '_ \
+#  |_|_|_\__,_|_| |_\__,_| \__,_|_.__/
 
+---
 - name: Add MariaDB MySQL apt-key
-  apt_key: url="http://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search={{ keyserver_fingerprint }}"
+  apt_key: url="http://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search={{repo.mariadb.keyserver_fingerprint}}"
            state=present
 
 - name: Add MariaDB MySQL deb and deb-src
   apt_repository: repo="{{ item }}" state=present
   with_items:
-  - "deb http://{{ mirror }}/mariadb/repo/{{ mariadb_version }}/ubuntu {{ ansible_distribution_release }} main"
-  - "deb-src http://{{ mirror }}/mariadb/repo/{{ mariadb_version }}/ubuntu {{ ansible_distribution_release }} main"
+  - "deb http://{{repo.mariadb.mirror}}/mariadb/repo/{{repo.mariadb.version}}/ubuntu {{ ansible_distribution_release }} main"
+  - "deb-src http://{{repo.mariadb.mirror}}/mariadb/repo/{{repo.mariadb.version}}/ubuntu {{ ansible_distribution_release }} main"
 
 - name: Install MariaDB MySQL server
   apt: name=mariadb-server state=present
@@ -35,7 +36,6 @@
     - 127.0.0.1
     - ::1
     - localhost
-
 
 - name: Delete anonymous MySQL server user for current hostname
   mysql_user: user=""
