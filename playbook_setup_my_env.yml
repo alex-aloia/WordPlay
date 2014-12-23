@@ -1,0 +1,9 @@
+---
+- name: "Setup Environment"
+  hosts: all
+  remote_user: tripl3inf
+  sudo_user: root
+  sudo: true
+
+  roles:
+    - my_env

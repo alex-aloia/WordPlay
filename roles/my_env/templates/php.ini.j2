@@ -1,0 +1,17 @@
+[PHP]
+error_reporting = {{ php.error_reporting }}
+display_errors = {{ php.display_errors }}
+display_startup_errors = {{ php.display_startup_errors }}
+track_errors = {{ php.track_errors }}
+
+[mysqlnd]
+mysqlnd.collect_memory_statistics = {{ php.mysqlnd_collect_memory_statistics }}
+
+[opcache]
+opcache.enable = {{ php.opcache.enable }}
+opcache.enable_cli = {{ php.opcache.enable_cli }}
+opcache.memory_consumption = {{ php.opcache.memory_consumption }}
+opcache.interned_strings_buffer = {{ php.opcache.interned_strings_buffer }}
+opcache.max_accelerated_files = {{ php.opcache.max_accelerated_files }}
+opcache.revalidate_freq = {{ php.opcache.revalidate_freq }}
+opcache.fast_shutdown = {{ php.opcache.fast_shutdown }}

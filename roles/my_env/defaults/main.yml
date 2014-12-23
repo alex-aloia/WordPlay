@@ -1,0 +1,49 @@
+# MySQL/MarinaDB root passwd
+sql_root_pass: "sql_pass"
+
+
+###
+# PHP5 - FPM
+###
+php:
+  disable_default_pool: true
+  error_reporting: 'E_ALL & ~E_DEPRECATED & ~E_STRICT'
+  display_errors: 'Off'
+  display_startup_errors: 'Off'
+  track_errors: 'Off'
+  mysqlnd_collect_memory_statistics: 'Off'
+  opcache:
+    enable: 1
+    memory_consumption: 128
+    memory_consumption: 128
+    interned_strings_buffer: 8
+    max_accelerated_files: 4000
+    revalidate_freq: 60
+    fast_shutdown: 1
+    enable_cli: 1
+
+
+###
+# memcached
+###
+memcached:
+  port: 11211
+  max_conn: 1024
+  cache_size: 64
+  fs_file_max: 756024
+  listen_ip: 127.0.0.1
+
+
+###
+# Source Repo URL's
+###
+repo:
+  # MariaDB
+  mariadb:
+    mirror: mirrors.coreix.net
+    keyserver_fingerprint: "0xcbcb082a1bb943db"
+    version: "10.0"
+  # wp-cli
+  wp_cli: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+  # node.js
+  nodejs: ppa:chris-lea/node.js

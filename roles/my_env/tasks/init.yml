@@ -1,0 +1,50 @@
+---
+  - name: Add Conky manager PPA
+    sudo: yes
+    apt_repository: repo='deb http://ppa.launchpad.net/teejee2008/ppa/ubuntu utopic main'
+  
+  - name: Add Conky manager PPA2
+    sudo: yes
+    apt_repository: repo='deb-src http://ppa.launchpad.net/teejee2008/ppa/ubuntu utopic main'
+
+  - name: Update apt
+    sudo: yes
+    apt: update_cache=yes
+
+  - name: Install initial packages
+    sudo: yes
+    apt: name={{ item }} state=latest
+    with_items:
+    - curl
+    - wget
+    - git
+    - ruby
+    - build-essential
+    - libssl-dev
+    - vim
+    - tmux
+    - tree
+    - mc
+    - htop
+    - openssh-client
+    - openssh-server
+    - openvpn
+    - iftop
+    - ack-grep
+    - aircrack-ng
+    - conky
+    - siege
+    - dtrx
+    - dstat
+    - mtr
+    - netcat
+    - nmap
+    - keychain
+    - nfs-common
+    - nfswatch
+    - nload
+    - chromium-browser
+    - conky-manager
+
+
+   
