@@ -19,33 +19,33 @@
 #  register: theme_path
 
 
-- name: Check if Node version config file is present
-  command: 'cat {{release.ansible_facts.path}}/.nvmrc'
-  register: nvmrc_result
-  failed_when: "'no such file' in nvmrc_result.stderr"
-
-- name: Set default Node version
-  lineinfile: dest='{{release.ansible_facts.path}}/.nvmrc' line='{{project.node_vs}}' create=yes state=present backup=no
-  when: nvmrc_result | failed
-
-- debug: var=nvmrc_result.stderr
+#- name: Check if Node version config file is present
+#  command: 'cat {{release.ansible_facts.path}}/.nvmrc'
+#  register: nvmrc_result
+#  failed_when: "'no such file' in nvmrc_result.stderr"
+#
+#- name: Set default Node version
+#  lineinfile: dest='{{release.ansible_facts.path}}/.nvmrc' line='{{project.node_vs}}' create=yes state=present backup=no
+#  when: nvmrc_result | failed
+#
+#- debug: var=nvmrc_result.stderr
 
 
 
 - name: Composer install
-  shell: cd {{release.ansible_facts.path}}; composer update ### or install?
+  shell: cd {{release.ansible_facts.path}}; composer install ### or update?
 
-- name: NPM Install
-  npm: path={{release.ansible_facts.path}}/themes/{{project.theme.name}}
+#- name: NPM Install
+#  npm: path={{release.ansible_facts.path}}/themes/{{project.theme.name}}
 
 
 - name: Update Bower, run Gulp
-  shell: cd {{release.ansible_facts.path}}/themes/{{project.theme.name}}; {{ item }}
+  shell: cd {{release.ansible_facts.path}}; {{ item }}
   ignore_errors: true
   with_items:
     - bower update --silent
-    - gulp less
     - npm install
+    - gulp less
 #  sudo: false
 
 - name: Update to current
@@ -56,12 +56,10 @@
   notify: restart nginx
 #  sudo: true
 ##  sudo_user: '{{deploy_user}}'
-#
-#
-#
-#
-#
-##
+
+
+
+
 #- name: Wait to restart nginx
 #  pause: seconds=10
 #  notify: restart nginx

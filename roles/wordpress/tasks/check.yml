@@ -1,0 +1,60 @@
+# Check if Wordpress is installed
+---
+# Register project path
+- name: Register project path
+  shell: "echo /srv/{{project.env}}/{{project.name}}"
+  register: project_root_path
+  ignore_errors: true
+  changed_when: project_root_path.rc == 'null'
+
+# Check if registered 'project_root_path' is present
+- name: Verify presence of project root
+  stat: path={{project_root_path.stdout}}
+  register: project_path
+
+# Print confimation if project root exists
+- debug: msg="Project root exists!"
+  when: project_path.stat.exists
+  #when: project_path.stat.isdir is defined and project_path.stat.isdir
+
+# If project root is missing, print & include structure task
+- debug: msg="Project root DOES NOT exist!"
+  when: project_path.stat.exists == false
+- include: structure.yml
+  when: project_path.stat.exists == false
+
+
+# check for wp-config file
+- name: Verify presence of wp-config file
+  stat: path='{{project_path}}/wp-config.php'
+  register: wp_config
+
+- debug: msg="wp-config file exists!"
+  when: wp_config.stat is defined and wp_config.stat
+
+- debug: msg="wp-config file NOT exists!"
+  when: wp_config.stat is not defined
+- include: create_wpconfig.yml
+  when: wp_config.stat is not defined
+
+
+#- name: Verify presence of Wordpress core directory
+#  stat: path={{project_path.stdout}}/wordpress
+#  register: wp-core
+#
+#- debug: msg="Wordpress core directory exists!"
+#  when: wp-core.stat.isdir is defined and wp-core.stat.isdir
+#
+#- name: Verify Wordpress is installed?
+#  command: wp core is-installed --allow-root
+#  args:
+#    chdir: "{{project_path.stdout}}/wordpress"
+#  register: wp_installed
+#  failed_when: "'This does not seem to be a WordPress install' in wp_installed.stderr"
+#  ignore_errors: true
+
+
+
+
+#- debug: msg='wp installed'
+#  when: "'This does not seem to be a WordPress install' in wp-installed.stderr"

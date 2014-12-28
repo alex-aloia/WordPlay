@@ -1,28 +1,36 @@
 ---
-- name: "Setup WP - {{env}}"
+- name: " Deploy project to ---{{project.env}}--- "
   hosts: all
   remote_user: "{{ deploy_user }}"
   #sudo: true
   sudo_user: root
-
   tasks:
-    - include: roles/wordpress/tasks/structure.yml
-    - include: roles/wordpress/tasks/db.yml
-    - include: roles/wordpress/tasks/nginx.yml
-    - include: roles/wordpress/tasks/php-fpm.yml
-    - include: roles/wordpress/tasks/wp.yml
-    - include: roles/wordpress/tasks/theme.yml
-    - include: roles/debug/tasks/webgrind.yml
+    - include: roles/wordpress/tasks/check.yml
+#    - include: roles/wordpress/tasks/structure.yml
+#      sudo: yes
+#    - include: roles/wordpress/tasks/db.yml
+#    - include: roles/wordpress/tasks/nginx.yml
+#    - include: roles/wordpress/tasks/php-fpm.yml
+#    - include: roles/wordpress/tasks/wp.yml
+#    - include: roles/wordpress/tasks/deploy.yml
   vars:
-    env: dev
-    wp_project_name: t3inf ### TODO: change mysql db user from project name -- messes up if puctuation is used
-    wp_home_url: dev.t3inf.com
-    wp_db_name: DB_t3inf_dev
-    wp_db_pass: tripl3World!
-    wp_admin_pass: tripl3World!
-    theme_name: t3i_roots
-    theme_repo_url: git@github.com:tripl3inf/WordPlay-Theme.git
-    theme_vs: feat_logoAnimation
-
+    deploy_user: tripl3inf
+    sql_root_pass: sql_pass
+    project:
+      name: t3inf ### TODO: change mysql db user from project name -- messes up if punctuation is used
+      env: prod # convention = dev,staging,prod
+      home_url: t3inf.com
+      db_name: DB_t3inf_dev
+      db_pass: tripl3World!
+      admin_pass: tripl3World!
+      admin_email: tripl3infinity@gmail.com
+      auto_update: no
+      theme:
+        name: roots
+        url: 'git@github.com:tripl3inf/WordPlay-Theme.git'
+        branch: feat_logoAnimation
+      vbox: false
+      memcached_sessions: false
   handlers:
     - include: roles/wordpress/handlers/main.yml
+
