@@ -1,0 +1,5 @@
+---
+- name: Download WP core files
+  command: wp core download --path="{{project_path.stdout}}/wordpress/"
+  sudo: false
+  register: wp_core_files

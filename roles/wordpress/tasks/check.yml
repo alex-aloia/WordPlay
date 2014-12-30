@@ -3,57 +3,61 @@
 # Register project path
 - name: Register project path
   shell: "echo /srv/{{project.env}}/{{project.name}}"
-  register: project_root_path
+  register: project_path
   ignore_errors: true
-  changed_when: project_root_path.rc == 'null'
+  changed_when: project_path.rc == 'null'
 
 # Check if registered 'project_root_path' is present
 - name: Verify presence of project root
-  stat: path={{project_root_path.stdout}}
-  register: project_path
+  stat: path={{project_path.stdout}}
+  register: project_exist
 
 # Print confimation if project root exists
-- debug: msg="Project root exists!"
-  when: project_path.stat.exists
+#- debug: msg="Project root exists!"
+#  when: project_exist.stat.exists == true
   #when: project_path.stat.isdir is defined and project_path.stat.isdir
 
 # If project root is missing, print & include structure task
-- debug: msg="Project root DOES NOT exist!"
-  when: project_path.stat.exists == false
+#- debug: msg="Project root DOES NOT exist!"
+#  when: project_exist.stat.exists == false
 - include: structure.yml
-  when: project_path.stat.exists == false
+  when: project_exist.stat.exists == false
 
 
 # check for wp-config file
 - name: Verify presence of wp-config file
-  stat: path='{{project_path}}/wp-config.php'
+  stat: path='{{project_path.stdout}}/wp-config.php'
   register: wp_config
 
-- debug: msg="wp-config file exists!"
-  when: wp_config.stat is defined and wp_config.stat
+#- debug: msg="wp-config file exists!"
+#  when: wp_config.stat.exists == true
 
-- debug: msg="wp-config file NOT exists!"
-  when: wp_config.stat is not defined
+#- debug: msg="wp-config file does NOT exist!"
+#  when: wp_config.stat.exists == false
 - include: create_wpconfig.yml
-  when: wp_config.stat is not defined
+  when: wp_config.stat.exists == false
 
 
-#- name: Verify presence of Wordpress core directory
-#  stat: path={{project_path.stdout}}/wordpress
-#  register: wp-core
-#
-#- debug: msg="Wordpress core directory exists!"
-#  when: wp-core.stat.isdir is defined and wp-core.stat.isdir
-#
-#- name: Verify Wordpress is installed?
-#  command: wp core is-installed --allow-root
-#  args:
-#    chdir: "{{project_path.stdout}}/wordpress"
-#  register: wp_installed
+- name: Verify presence of Wordpress core directory
+  stat: path='{{project_path.stdout}}/wordpress'
+  register: wp_core
+
+
+#- debug: msg="Wordpress core directory NOT exists!"
+- include: download_wp_core.yml
+  when: wp_core.stat.exists == false
+
+- name: Verify Wordpress is installed?
+  command: wp core is-installed --allow-root
+  args:
+    chdir: '{{project_path.stdout}}/wordpress'
+    register: wp_installed
 #  failed_when: "'This does not seem to be a WordPress install' in wp_installed.stderr"
 #  ignore_errors: true
 
 
+- name: debug
+  debug: var=wp_installed.stdout
 
 
 #- debug: msg='wp installed'

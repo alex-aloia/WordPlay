@@ -1,13 +1,11 @@
 ---
-- name: " Deploy project to ---{{project.env}}--- "
+- name: " Deploy Wordpress project to ---{{project.env}}--- "
   hosts: all
   remote_user: "{{ deploy_user }}"
   #sudo: true
   sudo_user: root
   tasks:
     - include: roles/wordpress/tasks/check.yml
-#    - include: roles/wordpress/tasks/structure.yml
-#      sudo: yes
 #    - include: roles/wordpress/tasks/db.yml
 #    - include: roles/wordpress/tasks/nginx.yml
 #    - include: roles/wordpress/tasks/php-fpm.yml

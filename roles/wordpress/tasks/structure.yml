@@ -1,12 +1,13 @@
 ---
 - name: Create projects site root
-  file: path=/srv/{{project.env}}/{{ project.name }}
+  file: path={{project_path.stdout}}
         state=directory
-  register: site_root
+  #file: path=/srv/{{project.env}}/{{ project.name }}
+  #register: site_root
   sudo: true
 
 - name: Create project directory structure
-  file: path={{ site_root.path }}/{{item}}
+  file: path={{project_path.stdout}}/{{item}}
         state=directory
   with_items:
     - logs
@@ -14,7 +15,7 @@
   sudo: true
 
 - name: Set permisions on project env
-  file: path=/srv/{{project.env}}
+  file: path={{project_path.stdout}}
         state=directory
         recurse=yes
         mode=0777

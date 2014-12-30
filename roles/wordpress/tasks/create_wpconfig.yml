@@ -1,8 +1,4 @@
 ---
-- name: Register project path
-  command: "echo /srv/{{project.env}}/{{project.name}}"
-  register: project_path
-
 - name: Fetch random salts for Wordpress config
   local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
   register: "wp_salt"
