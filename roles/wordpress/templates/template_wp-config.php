@@ -19,11 +19,17 @@ define('SAVEQUERIES', true);
 {% set domain = project.env + '.' %}
 define('WP_HOME','http://{{ domain | default('') }}{{ project.home_url }}');
 define('WP_SITEURL','http://{{ domain | default('') }}{{project.home_url}}/wordpress');
-define('WP_CONTENT_URL', 'http://{{ domain | default('') }}{{ project.home_url }}/content');
+
+// temp
+//define('WP_CONTENT_URL', 'http://{{ domain | default('') }}{{ project.home_url }}/content');
 {% endif %}
+
+// this one was commented out
 //define('WP_CONTENT_DIR', realpath($_SERVER['DOCUMENT_ROOT'] . '/content'));
 define('WP_ENV', '{{project.env}}');
-define( 'WP_CONTENT_DIR', dirname(__FILE__) . '/content' );
+
+// temp
+//define( 'WP_CONTENT_DIR', dirname(__FILE__) . '/content' );
 
 define('DB_NAME', '{{project.env}}_{{project.name}}');
 define('DB_USER', '{{ deploy_user }}');

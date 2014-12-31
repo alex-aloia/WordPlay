@@ -11,4 +11,12 @@
   args:
     chdir: "{{project_path.stdout}}"
   #when: wp_core_files | changed
-  #notify: restart nginx
+  notify: restart nginx
+
+
+#- name: Symlink stock themes
+#  file: src={{project_path.stdout}}/wordpress/wp-content/themes
+#        dest={{project_path.stdout}}/content/themes
+#        owner=root
+#        group=root
+#        state=link
