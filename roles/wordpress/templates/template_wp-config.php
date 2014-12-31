@@ -21,7 +21,7 @@ define('WP_HOME','http://{{ domain | default('') }}{{ project.home_url }}');
 define('WP_SITEURL','http://{{ domain | default('') }}{{project.home_url}}/wordpress');
 
 // temp
-//define('WP_CONTENT_URL', 'http://{{ domain | default('') }}{{ project.home_url }}/content');
+define('WP_CONTENT_URL', 'http://{{ domain | default('') }}{{ project.home_url }}/content');
 {% endif %}
 
 // this one was commented out
@@ -29,7 +29,7 @@ define('WP_SITEURL','http://{{ domain | default('') }}{{project.home_url}}/wordp
 define('WP_ENV', '{{project.env}}');
 
 // temp
-//define( 'WP_CONTENT_DIR', dirname(__FILE__) . '/content' );
+define( 'WP_CONTENT_DIR', dirname(__FILE__) . '/content' );
 
 define('DB_NAME', '{{project.env}}_{{project.name}}');
 define('DB_USER', '{{ deploy_user }}');

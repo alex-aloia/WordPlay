@@ -16,7 +16,7 @@
     sql_root_pass: sql_pass
     project:
       name: t3inf ### TODO: change mysql db user from project name -- messes up if punctuation is used
-      env: prod # convention = dev,staging,prod
+      env: dev # convention = dev,staging,prod
       home_url: t3inf.com
       db_name: DB_t3inf_dev
       db_pass: tripl3World!
