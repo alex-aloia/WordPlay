@@ -24,6 +24,17 @@ define('WP_SITEURL','http://{{ domain | default('') }}{{project.home_url}}/wordp
 define('WP_CONTENT_URL', 'http://{{ domain | default('') }}{{ project.home_url }}/content');
 {% endif %}
 
+
+
+{% if project.env == 'prod' %}
+define('WP_HOME','http://{{ project.home_url }}');
+define('WP_SITEURL','http://{{project.home_url}}/wordpress');
+define('WP_CONTENT_URL', 'http://{{ project.home_url }}/content');
+{% endif %}
+
+
+
+
 // this one was commented out
 //define('WP_CONTENT_DIR', realpath($_SERVER['DOCUMENT_ROOT'] . '/content'));
 define('WP_ENV', '{{project.env}}');

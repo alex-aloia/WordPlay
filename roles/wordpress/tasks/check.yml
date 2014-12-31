@@ -27,7 +27,7 @@
   stat: path='{{project_path.stdout}}/wordpress'
   register: wp_core
 
-- debug: msg="Wordpress core directory NOT exists!"
+#- debug: msg="Wordpress core directory NOT exists!"
 - include: download_wp_core.yml
   when: wp_core.stat.exists == false
 

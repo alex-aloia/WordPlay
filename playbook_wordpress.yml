@@ -1,5 +1,5 @@
 ---
-- name: " Deploy Wordpress project to ---{{project.env}}--- "
+- name: " Initiate Wordpress project to ---{{project.env}}--- @ {{ ansible_hostname }} "
   hosts: all
   remote_user: "{{ deploy_user }}"
   #sudo: true
@@ -16,9 +16,9 @@
     sql_root_pass: sql_pass
     project:
       name: t3inf ### TODO: change mysql db user from project name -- messes up if punctuation is used
-      env: dev # convention = dev,staging,prod
+      env: prod # convention = dev,staging,prod
       home_url: t3inf.com
-      db_name: DB_t3inf_dev
+      #db_name: DB_t3inf_dev
       db_pass: tripl3World!
       admin_pass: tripl3World!
       admin_email: tripl3infinity@gmail.com
