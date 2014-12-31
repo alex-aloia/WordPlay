@@ -1,0 +1,14 @@
+---
+- name: Install WP
+  command: wp core install
+           --allow-root
+           --url="{{ project.home_url }}"
+           --title="{{ project.name }}"
+           --admin_user="{{ deploy_user }}"
+           --admin_password="{{ project.admin_pass }}"
+           --admin_email="{{ project.admin_email }}"
+           --path="wordpress"
+  args:
+    chdir: "{{project_path.stdout}}"
+  #when: wp_core_files | changed
+  #notify: restart nginx

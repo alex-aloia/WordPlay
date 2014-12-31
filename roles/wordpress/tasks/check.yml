@@ -8,57 +8,49 @@
   changed_when: project_path.rc == 'null'
 
 # Check if registered 'project_root_path' is present
-- name: Verify presence of project root
-  stat: path={{project_path.stdout}}
-  register: project_exist
-
-# Print confimation if project root exists
-#- debug: msg="Project root exists!"
-#  when: project_exist.stat.exists == true
-  #when: project_path.stat.isdir is defined and project_path.stat.isdir
-
-# If project root is missing, print & include structure task
-#- debug: msg="Project root DOES NOT exist!"
+#- name: Verify presence of project project
+#  stat: path={{project_path.stdout}}
+#  register: project_exist
+#
+#- include: structure.yml
 #  when: project_exist.stat.exists == false
-- include: structure.yml
-  when: project_exist.stat.exists == false
-
-
-# check for wp-config file
-- name: Verify presence of wp-config file
-  stat: path='{{project_path.stdout}}/wp-config.php'
-  register: wp_config
-
-#- debug: msg="wp-config file exists!"
-#  when: wp_config.stat.exists == true
-
-#- debug: msg="wp-config file does NOT exist!"
+#
+## check for wp-config file
+#- name: Verify presence of wp-config file
+#  stat: path='{{project_path.stdout}}/wp-config.php'
+#  register: wp_config
+#
+#- include: create_wpconfig.yml
 #  when: wp_config.stat.exists == false
-- include: create_wpconfig.yml
-  when: wp_config.stat.exists == false
-
-
-- name: Verify presence of Wordpress core directory
-  stat: path='{{project_path.stdout}}/wordpress'
-  register: wp_core
+#
+#
+#- name: Verify presence of Wordpress core directory
+#  stat: path='{{project_path.stdout}}/wordpress'
+#  register: wp_core
 
 
 #- debug: msg="Wordpress core directory NOT exists!"
-- include: download_wp_core.yml
-  when: wp_core.stat.exists == false
+#- include: download_wp_core.yml
+#  when: wp_core.stat.exists == false
 
 - name: Verify Wordpress is installed?
-  command: wp core is-installed --allow-root
+  shell: wp core is-installed
+  #command: wp core is-installed --allow-root
   args:
     chdir: '{{project_path.stdout}}/wordpress'
-    register: wp_installed
+  register: wp_installed
+  changed_when: wp_installed.rc != 0
+  #failed_when: wp_installed.stderr != 'null'
 #  failed_when: "'This does not seem to be a WordPress install' in wp_installed.stderr"
-#  ignore_errors: true
+  ignore_errors: true
 
 
 - name: debug
-  debug: var=wp_installed.stdout
+  debug: var=wp_installed
 
+- include: db.yml
+  when: "'Error' in wp_installed.stderr"
 
-#- debug: msg='wp installed'
-#  when: "'This does not seem to be a WordPress install' in wp-installed.stderr"
+#- debug: msg='wp NOT installed'
+- include: install_wp.yml
+  when: "'Error' in wp_installed.stderr"
