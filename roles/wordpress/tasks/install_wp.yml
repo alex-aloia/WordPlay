@@ -10,9 +10,7 @@
            --path="wordpress"
   args:
     chdir: "{{project_path.stdout}}"
-  #when: wp_core_files | changed
   notify: restart nginx
-
 
 - name: Create themes directory
   file: path='{{project_path.stdout}}/content/themes' state=directory
@@ -20,8 +18,3 @@
 - name: Copy stock themes
   shell: 'cp -r {{project_path.stdout}}/wordpress/wp-content/themes/* {{project_path.stdout}}/content/themes/'
 
-#  file: src={{project_path.stdout}}/wordpress/wp-content/themes
-#        dest={{project_path.stdout}}/content/themes
-#        owner=root
-#        group=root
-#        state=link

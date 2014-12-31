@@ -1,29 +1,10 @@
 ---
-# - name: Register Nginx configuration file name
-#   command: "echo {{ project.env | default(dev) }}_{{ project.name }}.conf"
-#   register: ngx_conf
-
  - name: Create WordPress configuration for Nginx
    template: src="template_nginx_wp.conf" dest={{ngx_conf.stdout}}
-   #ignore_errors: true
    sudo: true
 
  - name: Add sendfile off param if VBox ( http://wiki.nginx.org/Pitfalls )
    lineinfile: dest=ngx_conf insertafter="^listen" line="sendfile off;"
    when: 'project.vbox == true'
-
-# - name: Enable WordPress site
-#   file: src={{ngx_conf.stdout}}
-#         dest=/etc/nginx/sites-enabled/{{ project.env | default(dev) }}_{{ project.name }}.conf
-#         owner=root
-#         group=root
-#         state=link
-#   sudo: true
-
-# - name: Open firewall for http
-#   shell: ufw allow http
-#   sudo: true
-
-#   notify: restart nginx
 
 

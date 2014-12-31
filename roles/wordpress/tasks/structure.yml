@@ -2,8 +2,6 @@
 - name: Create projects site root
   file: path={{project_path.stdout}}
         state=directory
-  #file: path=/srv/{{project.env}}/{{ project.name }}
-  #register: site_root
   sudo: true
 
 - name: Create project directory structure
@@ -20,55 +18,3 @@
         recurse=yes
         mode=0777
   sudo: true
-
-
-#- name: Create REPO directory
-#  file: path=/srv/{{project.env}}/{{project.name}}/repo
-#        state=directory
-#        recurse=true
-#        owner={{deploy_user}}
-#        group=www-data
-#        mode=755
-#  register: repo
-#  sudo: true
-
-#- name: Change site owner to user
-#  file: path={{ site_root.path }}
-#        owner={{ deploy_user }}
-#        group=www-data
-#  sudo: true
-#  when: "{{project.env}} not dev"
-
-
-
-
-
-
-# file: path=/srv/{{ project.name }}
-#  shell: chown -R {{ deploy_user }}:www-data /srv/{{ project.name }}
-#- name: Verify permissons (0755)
-#  file: path=/srv/{{ project.name }}
-#        recurse=yes
-
-### BEFORE NFS -- Cant change owership locally with NFS
-#- name: Create web root of sites
-#  file: path="/srv/{{ project.name }}/www"
-#        owner="{{ deploy_user }}"
-#        group=www-data
-#        mode=0755
-#        state=directory
-#  tags: dbg
-#
-#- name: Create logs folder of sites
-#  file: path="/srv/{{ project.name }}/logs"
-#        owner="{{ deploy_user }}"
-#        group=www-data
-#        mode=0755
-#        state=directory
-#
-#- name: Change site owner to user
-#  file: path="/srv/{{ project.name }}"
-#        owner="{{ deploy_user }}"
-#        group=www-data
-#        state=directory
-#        recurse=yes

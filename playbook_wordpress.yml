@@ -5,11 +5,7 @@
   #sudo: true
   sudo_user: root
   tasks:
-    - include: roles/wordpress/tasks/check.yml
-#    - include: roles/wordpress/tasks/db.yml
-#    - include: roles/wordpress/tasks/nginx.yml
-#    - include: roles/wordpress/tasks/php-fpm.yml
-#    - include: roles/wordpress/tasks/wp.yml
+    - include: roles/wordpress/tasks/main.yml
 #    - include: roles/wordpress/tasks/deploy.yml
   vars:
     deploy_user: tripl3inf
@@ -18,7 +14,6 @@
       name: t3inf ### TODO: change mysql db user from project name -- messes up if punctuation is used
       env: prod # convention = dev,staging,prod
       home_url: t3inf.com
-      #db_name: DB_t3inf_dev
       db_pass: tripl3World!
       admin_pass: tripl3World!
       admin_email: tripl3infinity@gmail.com

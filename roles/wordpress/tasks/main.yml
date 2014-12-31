@@ -1,45 +1,71 @@
-# create directory structure
+# Check if Wordpress is installed
+---
+# Register project path
+- name: Register project path
+  shell: "echo /srv/{{project.env}}/{{project.name}}"
+  register: project_path
+  ignore_errors: true
+  changed_when: project_path.rc == 'null'
+
+# Check if registered 'project_root_path' is present
+- name: Verify presence of project project
+  stat: path={{project_path.stdout}}
+  register: project_exist
+
 - include: structure.yml
-  sudo: true
+  when: project_exist.stat.exists == false
 
-# create database
-- include: db.yml
+# check for wp-config file
+- name: Verify presence of wp-config file
+  stat: path='{{project_path.stdout}}/wp-config.php'
+  register: wp_config
 
-# add Nginx conf
+- include: create_wpconfig.yml
+  when: wp_config.stat.exists == false
+
+- name: Verify presence of Wordpress core directory
+  stat: path='{{project_path.stdout}}/wordpress'
+  register: wp_core
+
+- include: download_wp_core.yml
+  when: wp_core.stat.exists == false
+
+- name: Register Nginx configuration file
+  command: "echo /etc/nginx/sites-enabled/{{ project.env | default(dev) }}_{{ project.name }}.conf"
+  register: ngx_conf
+  changed_when: ngx_conf.rc != 0
+
+- name: Verify presence of Nginx configuration file
+  stat: path='{{ngx_conf.stdout}}'
+  register: ngx_conf_exists
+
 - include: nginx.yml
-  tags: nginx
+  when: ngx_conf_exists.stat.exists == false
 
-# add PHP-FPM conf
+- name: Register PHP-FPM configuration file
+  command: "echo /etc/php5/fpm/pool.d/{{ project.env | default(dev) }}_{{ project.name }}.conf"
+  register: php_fpm_conf
+  changed_when: php_fpm_conf.rc != 0
+
+- name: Verify presence of PHP-FPM configuration file
+  stat: path='{{php_fpm_conf.stdout}}'
+  register: php_fpm_conf_exists
+
 - include: php-fpm.yml
+  when: php_fpm_conf_exists.stat.exists == false
 
-# configure wordpress
-- include: wp.yml
+- name: Verify Wordpress is installed?
+  shell: wp core is-installed
+  #command: wp core is-installed --allow-root
+  args:
+    chdir: '{{project_path.stdout}}/wordpress'
+  register: wp_installed
+  changed_when: wp_installed.rc != 0
+  ignore_errors: true
 
-## configure theme building environment
-#- include: theme.yml
-#  tags: theme
+- include: db.yml
+  when: "'Error' in wp_installed.stderr"
 
-## Staging
-#- include: structure.yml env=staging
-#  sudo: true
-#  tags: staging
-#
-#- include: db.yml env=staging
-#  sudo: true
-#  tags: staging
-#
-#- include: nginx.yml env=staging
-#  sudo: true
-#  tags: staging
-#
-#- include: php-fpm.yml env=staging
-#  sudo: true
-#  tags: staging
-#
-#- include: wp.yml env=staging
-#  sudo: true
-#  tags: staging
-#
-#- include: theme.yml env=staging
-#  sudo: true
-#  tags: staging
+- include: install_wp.yml
+  when: "'Error' in wp_installed.stderr"
+
