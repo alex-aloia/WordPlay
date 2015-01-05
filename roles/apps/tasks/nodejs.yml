@@ -1,10 +1,28 @@
 # install node.js
-
 ---
- - name: Add NodeJS PPA
-   apt_repository: repo="{{repo.nodejs}}" state=present update_cache=yes
-   #shell: curl -sL https://deb.nodesource.com/setup | sudo bash -
+ - name: Get current Node.js source
+   shell: "cd /tmp; wget http://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz"
+   tags: node
 
- - name: Install NodeJS
-   apt: name=nodejs state=present
-   sudo: yes
+ - name: Uncompress nodejs
+   shell: "cd /tmp; tar zxvf node-v0.10.35.tar.gz"
+   tags: node
+
+ - name: Build Node.js
+   shell: "cd /tmp/node-v0.10.35; {{item}}"
+   sudo: true
+   with_items:
+      - ./configure
+      - make
+      - make install
+   tags: node
+
+
+
+# - name: Add NodeJS PPA
+#   apt_repository: repo="{{repo.nodejs}}" state=present update_cache=yes
+#   #shell: curl -sL https://deb.nodesource.com/setup | sudo bash -
+#
+# - name: Install NodeJS
+#   apt: name=nodejs state=present
+#   sudo: yes

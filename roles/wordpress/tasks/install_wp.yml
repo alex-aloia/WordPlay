@@ -5,16 +5,18 @@
            --url="{{ project.home_url }}"
            --title="{{ project.name }}"
            --admin_user="{{ deploy_user }}"
-           --admin_password="{{ project.admin_pass }}"
-           --admin_email="{{ project.admin_email }}"
-           --path="wordpress"
+           --admin_password={{ project.admin_pass }}
+           --admin_email={{ project.admin_email }}
+           --path=wordpress
   args:
     chdir: "{{project_path.stdout}}"
-  notify: restart nginx
 
 - name: Create themes directory
-  file: path='{{project_path.stdout}}/content/themes' state=directory
+  file: path="{{project_path.stdout}}/content/themes" state=directory
 
 - name: Copy stock themes
-  shell: 'cp -r {{project_path.stdout}}/wordpress/wp-content/themes/* {{project_path.stdout}}/content/themes/'
+  shell: "cp -r {{project_path.stdout}}/wordpress/wp-content/themes/* {{project_path.stdout}}/content/themes/"
+  notify:
+    - restart php-fpm
+    - restart nginx
 

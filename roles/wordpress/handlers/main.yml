@@ -1,15 +1,16 @@
 ---
 - name: restart nginx
   service: name=nginx state=reloaded
+  sudo: true
 
 - name: reload nginx
   service: name=nginx state=reloaded
+  sudo: true
 
 - name: restart php-fpm
   shell: service php5-fpm restart
-  #service: name=php5-fpm state=restarted
   sudo: true
-  sudo_user: root
 
 - name: reload php-fpm
   service: name=php5-fpm state=reloded
+  sudo: true

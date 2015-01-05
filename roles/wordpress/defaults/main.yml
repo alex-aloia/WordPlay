@@ -1,5 +1,5 @@
 project:
-  node_version: 10.0.32
+  node_version: 10.0.35
 
 #env: prod
 #default_theme_branch: HEAD

@@ -39,21 +39,33 @@
 #  npm: path={{release.ansible_facts.path}}/themes/{{project.theme.name}}
 
 
-- name: Update Bower, run Gulp
-  shell: cd {{release.ansible_facts.path}}; {{ item }}
-  ignore_errors: true
-  with_items:
-    - bower update --silent
-    - npm install
-    - gulp less
-#  sudo: false
+#- name: Update Bower, run Gulp
+#  shell: cd {{release.ansible_facts.path}}; {{ item }}
+#  ignore_errors: true
+#  with_items:
+#    - bower update --silent
+#    - npm update
+#    - gulp less
+##  sudo: false
+
+- name: Update Bower
+  shell: cd {{release.ansible_facts.path}}; bower update --silent
+
+- name: NPM
+  shell: cd {{release.ansible_facts.path}}; npm install
+
+- name: Gulp
+  shell: cd {{release.ansible_facts.path}}; gulp
 
 - name: Update to current
   file: >
     state=link
-    path=/srv/{{project.env}}/{{ project.name }}/content
-    src={{release.ansible_facts.path}}
-  notify: restart nginx
+    path=/srv/{{project.env}}/{{ project.name }}/content/themes/{{project.theme.name}}
+    src={{release.ansible_facts.path}}/themes/{{project.theme.name}}
+  notify:
+    - restart nginx
+    - restart php-fpm
+
 #  sudo: true
 ##  sudo_user: '{{deploy_user}}'
 

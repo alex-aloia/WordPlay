@@ -46,4 +46,5 @@ repo:
   # wp-cli
   wp_cli: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
   # node.js
-  nodejs: ppa:chris-lea/node.js
+  nodejs: http://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz
+  #nodejs: ppa:chris-lea/node.js
