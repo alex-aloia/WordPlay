@@ -1,1 +1,2 @@
-t3inf.com ansible_ssh_host=104.131.24.82 ansible_ssh_user=tripl3inf ansible_ssh_private_key_file=/Users/tripl3inf/.ssh/digitalOcean
+t3inf.com ansible_ssh_host=104.236.84.132 ansible_ssh_user=tripl3inf ansible_ssh_private_key_file=/Users/tripl3inf/.ssh/digitalOcean
+#t3inf.com ansible_ssh_host=104.131.24.82 ansible_ssh_user=tripl3inf ansible_ssh_private_key_file=/Users/tripl3inf/.ssh/digitalOcean
