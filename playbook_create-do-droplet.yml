@@ -1,10 +1,17 @@
-#Create new droplet
----
+#    ___              _         ___  _      _ _        _  ___                     ___               _     _
+#   / __|_ _ ___ __ _| |_ ___  |   \(_)__ _(_) |_ __ _| |/ _ \ __ ___ __ _ _ _   |   \ _ _ ___ _ __| |___| |_
+#  | (__| '_/ -_) _` |  _/ -_) | |) | / _` | |  _/ _` | | (_) / _/ -_) _` | ' \  | |) | '_/ _ \ '_ \ / -_)  _|
+#   \___|_| \___\__,_|\__\___| |___/|_\__, |_|\__\__,_|_|\___/\__\___\__,_|_||_| |___/|_| \___/ .__/_\___|\__|
+#                                     |___/                                                   |_|
+# DEPENDENCIES:
+#   - DOPY Module (pip install dopy)
+#   - python-passlib (apt-get install)
 
+
+---
 # Ensure SSH Key is present, else upload provided --
 - hosts: 127.0.0.1
   connection: local
-  #serial: 1
   gather_facts: False
 
   roles:
@@ -16,7 +23,6 @@
     my_pub_key: "{{ lookup('file', '/Users/tripl3inf/.ssh/digitalOcean.pub') }}"
     ssh_key_name: master
     do_hostname: tripl3inf.com
-    #do_admin: tripl3inf
     image_id: 7111343 #ubuntu 14.10
     region_id: 8 #nyc3
 
@@ -24,11 +30,11 @@
 - hosts: new_drops
   gather_facts: True
   remote_user: root
-  #sudo: true
 
   roles:
   - user
   - apps
+  - env_vars
 
   vars:
     my_pub_key: "{{ lookup('file', '/Users/tripl3inf/.ssh/digitalOcean.pub') }}"
@@ -45,7 +51,7 @@
   - name: "deploy_passwd"
     prompt: "Enter a new password for the user"
     private: yes
-    encrypt: "md5_crypt" #need to have python-passlib installed in local machine before we can use it
+    encrypt: "md5_crypt"
     confirm: yes
     salt_size: 7
 
