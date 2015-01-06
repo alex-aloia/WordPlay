@@ -6,7 +6,6 @@
 - name: Set release directory
   set_fact: path="/srv/{{project.env}}/{{project.name}}/repo/{{ timestamp.stdout }}"
   register: release
-  #sudo: true
 
 - name: Checkout theme base from repo
   git: repo={{ project.theme.url }} dest="{{release.ansible_facts.path}}/" version={{project.theme.branch | default(HEAD)}} accept_hostkey=yes
@@ -14,68 +13,35 @@
 
 - debug: var=release.ansible_facts.path
 
-#- name: Register theme(s) #TODO: add support for multiple themes
-#  command: "echo {{release_path.stdout}}/themes/{{theme.name}}"
-#  register: theme_path
+- name: Composer install, Bower update, NPM install
+  shell: cd {{release.ansible_facts.path}}; {{ item }}
+  with_items:
+    - composer install
+    - bower update --silent
+    - npm install
 
+- name: Gulp Dev
+  shell: cd {{release.ansible_facts.path}}; gulp dev
+  when: "'{{project.env}}' == 'dev'"
 
-#- name: Check if Node version config file is present
-#  command: 'cat {{release.ansible_facts.path}}/.nvmrc'
-#  register: nvmrc_result
-#  failed_when: "'no such file' in nvmrc_result.stderr"
-#
-#- name: Set default Node version
-#  lineinfile: dest='{{release.ansible_facts.path}}/.nvmrc' line='{{project.node_vs}}' create=yes state=present backup=no
-#  when: nvmrc_result | failed
-#
-#- debug: var=nvmrc_result.stderr
-
-
-
-- name: Composer install
-  shell: cd {{release.ansible_facts.path}}; composer install ### or update?
-
-#- name: NPM Install
-#  npm: path={{release.ansible_facts.path}}/themes/{{project.theme.name}}
-
-
-#- name: Update Bower, run Gulp
-#  shell: cd {{release.ansible_facts.path}}; {{ item }}
-#  ignore_errors: true
-#  with_items:
-#    - bower update --silent
-#    - npm update
-#    - gulp less
-##  sudo: false
-
-- name: Update Bower
-  shell: cd {{release.ansible_facts.path}}; bower update --silent
-
-- name: NPM
-  shell: cd {{release.ansible_facts.path}}; npm install
-
-- name: Gulp
+- name: Gulp Prod
   shell: cd {{release.ansible_facts.path}}; gulp
+  when: "'{{project.env}}' != 'dev'"
 
 - name: Update to current
   file: >
     state=link
-    path=/srv/{{project.env}}/{{ project.name }}/content/themes/{{project.theme.name}}
+    follow=yes
+    path=/srv/{{project.env}}/{{ project.name }}/www/content/themes/{{project.theme.name}}
     src={{release.ansible_facts.path}}/themes/{{project.theme.name}}
+
+- name: Update to current plugins
+  file: >
+    state=link
+    follow=yes
+    path=/srv/{{project.env}}/{{ project.name }}/www/content/plugins
+    src={{release.ansible_facts.path}}/vendor/plugins
   notify:
     - restart nginx
     - restart php-fpm
 
-#  sudo: true
-##  sudo_user: '{{deploy_user}}'
-
-
-
-
-#- name: Wait to restart nginx
-#  pause: seconds=10
-#  notify: restart nginx
-
-#- name: php-fpm restart
-#  shell: service php5-fpm restart
-#  sudo: true

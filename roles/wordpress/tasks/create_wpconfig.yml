@@ -6,10 +6,10 @@
   tags: dbg
 
 - name: Create wp-config file
-  template: src="template_wp-config.php" dest="{{project_path.stdout}}/wp-config.php"
+  template: src="template_wp-config.php" dest="{{project_path.stdout}}/www/wp-config.php"
   register: "{{project.env}}"
 
 - name: Copy index.php file
-  template: src="template_wp_index.php" dest="{{project_path.stdout}}/index.php"
+  template: src="template_wp_index.php" dest="{{project_path.stdout}}/www/index.php"
 
 

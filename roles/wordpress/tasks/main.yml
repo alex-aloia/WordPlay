@@ -14,17 +14,18 @@
 
 - include: structure.yml
   when: project_exist.stat.exists == false
+  sudo: true
 
 # check for wp-config file
 - name: Verify presence of wp-config file
-  stat: path='{{project_path.stdout}}/wp-config.php'
+  stat: path='{{project_path.stdout}}/www/wp-config.php'
   register: wp_config
 
 - include: create_wpconfig.yml
   when: wp_config.stat.exists == false
 
 - name: Verify presence of Wordpress core directory
-  stat: path='{{project_path.stdout}}/wordpress'
+  stat: path='{{project_path.stdout}}/www/wordpress'
   register: wp_core
 
 - include: download_wp_core.yml
@@ -56,9 +57,8 @@
 
 - name: Verify Wordpress is installed?
   shell: wp core is-installed
-  #command: wp core is-installed --allow-root
   args:
-    chdir: '{{project_path.stdout}}/wordpress'
+    chdir: '{{project_path.stdout}}/www/wordpress'
   register: wp_installed
   changed_when: wp_installed.rc != 0
   ignore_errors: true

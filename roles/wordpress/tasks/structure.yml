@@ -2,19 +2,24 @@
 - name: Create projects site root
   file: path={{project_path.stdout}}
         state=directory
-  sudo: true
 
 - name: Create project directory structure
   file: path={{project_path.stdout}}/{{item}}
         state=directory
   with_items:
+    - www
     - logs
     - repo
-  sudo: true
+
+- name: Create content directory
+  file: path={{project_path.stdout}}/www/content
+        state=directory
+
+- name: Create themes directory
+  file: path="{{project_path.stdout}}/www/content/themes" state=directory
 
 - name: Set permisions on project env
   file: path={{project_path.stdout}}
         state=directory
         recurse=yes
         mode=0777
-  sudo: true
