@@ -1,0 +1,38 @@
+---
+- name: Set release directory
+  set_fact: path="/srv/{{project.env}}/{{project.name}}/repo/content"
+  register: release
+
+- name: Checkout theme base from repo
+  git: repo={{ project.theme.url }} dest="{{release.ansible_facts.path}}/" version={{project.theme.branch | default(HEAD)}} accept_hostkey=yes
+  sudo: false
+
+- debug: var=release.ansible_facts.path
+
+- name: Composer install, Bower update, NPM install
+  shell: cd {{release.ansible_facts.path}}; {{ item }}
+  with_items:
+    - composer install
+    - bower install --silent
+    - npm install
+
+- name: Gulp Dev
+  shell: cd {{release.ansible_facts.path}}; gulp dev
+
+- name: Update to current
+  file: >
+    state=link
+    follow=yes
+    path=/srv/{{project.env}}/{{ project.name }}/www/content/themes/{{project.theme.name}}
+    src={{release.ansible_facts.path}}/themes/{{project.theme.name}}
+
+- name: Update to current plugins
+  file: >
+    state=link
+    follow=yes
+    path=/srv/{{project.env}}/{{ project.name }}/www/content/plugins
+    src={{release.ansible_facts.path}}/vendor/plugins
+  notify:
+    - restart nginx
+    - restart php-fpm
+

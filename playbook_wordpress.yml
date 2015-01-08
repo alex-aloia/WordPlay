@@ -8,26 +8,30 @@
   hosts: all
   remote_user: "{{deploy_user}}"
   sudo_user: root
-  tasks:
-    - include: roles/wordpress/tasks/main.yml
-    - include: roles/wordpress/tasks/deploy.yml
   vars:
     deploy_user: tripl3inf
     sql_root_pass: sql_pass
     project:
       name: t3inf ### TODO: change mysql db user from project name -- messes up if punctuation is used
-      env: dev # convention = dev,staging,prod
+      env: prod # convention = dev,staging,prod
       home_url: t3inf.com # NO sub-domain -- eg: google.com, not www.google.com
       db_pass: tripl3World!
       admin_pass: tripl3World!
       admin_email: tripl3infinity@gmail.com
       auto_update: no
       theme:
-        name: roots
+        name: custom
         url: 'git@github.com:tripl3inf/WordPlay-Theme.git'
-        branch: feat_logoAnimation
+        branch: fix
       vbox: false
       memcached_sessions: false
+  tasks:
+    - include: roles/wordpress/tasks/main.yml
+    - include: roles/wordpress/tasks/dev.yml
+      when: project.env == 'dev'
+    - include: roles/wordpress/tasks/deploy.yml
+      when: project.env != 'dev'
+
   handlers:
     - include: roles/wordpress/handlers/main.yml
 
