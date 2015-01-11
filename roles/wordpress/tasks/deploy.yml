@@ -20,10 +20,6 @@
     - bower update --silent
     - npm install
 
-- name: Gulp Dev
-  shell: cd {{release.ansible_facts.path}}; gulp dev
-  when: "'{{project.env}}' == 'dev'"
-
 - name: Gulp Prod
   shell: cd {{release.ansible_facts.path}}; gulp
   when: "'{{project.env}}' != 'dev'"

@@ -8,6 +8,9 @@
   vars:
     deploy_user: tripl3inf
     wp_project_name: t3inf.com
+    php:
+      opcache:
+        enable: 0 ### TODO: change to conditional boolean to control cache for dev/prod -- 0=off, 1=on
 
   roles:
     - apps

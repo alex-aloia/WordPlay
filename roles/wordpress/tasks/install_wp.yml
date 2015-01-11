@@ -11,9 +11,9 @@
   args:
     chdir: "{{project_path.stdout}}/www"
 
-- name: Copy stock themes
-  shell: "cp -r {{project_path.stdout}}/www/wordpress/wp-content/themes/* {{project_path.stdout}}/www/content/themes/"
-  notify:
-    - restart php-fpm
-    - restart nginx
+#- name: Copy stock themes
+#  shell: "cp -r {{project_path.stdout}}/www/wordpress/wp-content/themes/* {{project_path.stdout}}/www/content/themes/"
+#  notify:
+#    - restart php-fpm
+#    - restart nginx
 
