@@ -5,6 +5,4 @@
 
   - name: Install open-vm-tools
     sudo: yes
-    apt: pkg={{ item }} state=latest
-    with_items:
-    - open-vm-tools
+    apt: pkg=open-vm-tools state=latest

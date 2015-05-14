@@ -1,4 +1,10 @@
 # SSH config can be generated thru Vagrant vi `vagrant ssh-config`
 
 [dev]
-dev.t3inf.com ansible_ssh_host=192.168.238.151 ansible_connection=ssh ansible_ssh_user=tripl3inf ansible_ssh_private_key_file=/Users/tripl3inf/Vagrants/dev.t3inf.com/.vagrant/machines/vmware/vmware_fusion/private_key
+test ansible_ssh_host=192.168.224.161 ansible_connection=ssh ansible_ssh_user=vagrant ansible_ssh_private_key_file=/Users/tripl3inf/.ssh/vagrant
+
+
+
+
+#dev.t3inf.com ansible_ssh_host=192.168.238.151 ansible_connection=ssh ansible_ssh_user=tripl3inf ansible_ssh_private_key_file=/Users/tripl3inf/Vagrants/dev.t3inf.com/.vagrant/machines/vmware/vmware_fusion/private_key
+

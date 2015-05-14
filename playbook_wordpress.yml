@@ -9,15 +9,15 @@
   remote_user: "{{deploy_user}}"
   sudo_user: root
   vars:
-    deploy_user: tripl3inf
+    deploy_user: vagrant
     sql_root_pass: sql_pass
     project:
-      name: t3inf ### TODO: change mysql db user from project name -- messes up if punctuation is used
+      name: test ### TODO: change mysql db user from project name -- messes up if punctuation is used
       env: dev # convention = dev,staging,prod
-      home_url: t3inf.com # NO sub-domain -- eg: google.com, not www.google.com
-      db_pass: tripl3World!
-      admin_pass: tripl3World!
-      admin_email: tripl3infinity@gmail.com
+      home_url: test.com # NO sub-domain -- eg: google.com, not www.google.com
+      db_pass: sql_pass
+      admin_pass: wp_pwd
+      admin_email: admin@gmail.com
       auto_update: no
       theme:
         name: custom
