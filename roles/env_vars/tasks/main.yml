@@ -1,4 +1,0 @@
----
-- name: Open firewall for http
-  shell: ufw allow http
-  sudo: true

@@ -8,6 +8,10 @@
 - name: Disable default server
   file: path=/etc/nginx/sites-enabled/default state=absent
 
+- name: Open firewall for http
+  shell: ufw allow http
+  sudo: true
+
 #- name: Create base WordPress config
 #  template: src=wordpress.conf.j2 dest=/etc/nginx/wordpress.conf
 #
