@@ -12,8 +12,6 @@
   roles:
     - vmware-tools
     - apps
-    - env_vars
-
 
 
 
