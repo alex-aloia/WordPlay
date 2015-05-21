@@ -56,5 +56,10 @@
             login_user=root
             login_password="{{ sql_root_pass }}"
 
-
+- name: Config default db storage engine
+  lineinfile: >
+    state=present
+    dest=/etc/mysql/my.cnf
+    regexp='^default_storage_engine\s+=\s+[a-zA-Z]+'
+    line='default_storage_engine = {{ mysql.db_storage_engine }}'
 

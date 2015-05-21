@@ -46,6 +46,7 @@ define('DB_COLLATE', '');
 define('WPLANG', '');
 $table_prefix  = 'wp_';
 
+
 // SALTS GO HERE
 {{ wp_salt.stdout }}
 

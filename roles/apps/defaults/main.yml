@@ -13,7 +13,7 @@ php:
   track_errors: 'Off'
   mysqlnd_collect_memory_statistics: 'Off'
   opcache:
-    enable: 1
+    enable: 0 ### 0 = off, 1 = on -- TODO: change to contitional, dev off, else on
     memory_consumption: 128
     memory_consumption: 128
     interned_strings_buffer: 8
@@ -21,6 +21,13 @@ php:
     revalidate_freq: 60
     fast_shutdown: 1
     enable_cli: 1
+
+
+###
+# mysql
+###
+mysql:
+  db_storage_engine: MYISAM ### Default is InnoDB -- doesn't play well with WP-CLI db import/exports
 
 
 ###

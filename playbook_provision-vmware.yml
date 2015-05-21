@@ -9,6 +9,7 @@
   remote_user: root
   gather_facts: yes
   sudo: yes
+
   roles:
     - vmware-tools
     - apps
