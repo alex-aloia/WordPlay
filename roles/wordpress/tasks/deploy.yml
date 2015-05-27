@@ -20,6 +20,21 @@
     - bower update --silent
     - npm install
 
+
+- name: Copy database dump
+  copy: src="{{ project.db_import }}" dest=/tmp
+  when: project.db_import | default(False)
+
+- name: Import database
+  mysql_db: name="{{ project.env }}_{{ project.name }}"
+            state=import
+            target="/tmp/{{ project.db_import }}"
+            login_host="{{ 'localhost' }}"
+            login_user="{{ deploy_user }}"
+            login_password="{{ project.db_pass }}"
+  when: project.db_import | default(False)
+
+
 - name: Gulp Prod
   shell: cd {{release.ansible_facts.path}}; gulp
   when: "'{{project.env}}' != 'dev'"
