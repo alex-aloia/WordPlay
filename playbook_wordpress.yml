@@ -13,16 +13,16 @@
     sql_root_pass: sql_pass
     project:
       name: test ### TODO: change mysql db user from project name -- messes up if punctuation is used
-      env: prod # convention = dev,staging,prod
+      env: dev # convention = dev,staging,prod
       home_url: test.com # NO sub-domain -- eg: google.com, not www.google.com
       db_pass: sql_pass
       #db_import: db_import.sql ### disabled by default
       admin_pass: wp_pwd
-      admin_email: admin@gmail.com
+      admin_email: admin@na.com
       theme:
         name: custom
         url: 'git@github.com:tripl3inf/WordPlay-Theme.git'
-        branch: t3inf
+        branch: master
       vbox: false
       memcached_sessions: false
       auto_update: no

@@ -31,10 +31,11 @@ define('WP_CONTENT_URL', 'http://{{ project.home_url }}/content');
 
 define('WP_ENV', '{{project.env}}');
 
-//define('WP_CONTENT_DIR', realpath($_SERVER['DOCUMENT_ROOT'] . '/content'));
 
-// temp
 define( 'WP_CONTENT_DIR', dirname(__FILE__) . '/content' );
+
+// if the above fails, use this instead
+//define('WP_CONTENT_DIR', realpath($_SERVER['DOCUMENT_ROOT'] . '/content'));
 
 define('DB_NAME', '{{project.env}}_{{project.name}}');
 define('DB_USER', '{{ deploy_user }}');
@@ -46,6 +47,7 @@ define('DB_COLLATE', '');
 define('WPLANG', '');
 $table_prefix  = 'wp_';
 
+define( 'WP_DEFAULT_THEME', '{{project.theme.name}}' );
 
 // SALTS GO HERE
 {{ wp_salt.stdout }}

@@ -15,7 +15,7 @@
     - composer install
     - bower install --silent
     - npm update
-    - gulp
+    - gulp dev-build
   sudo: false
 
 - name: Update to current
